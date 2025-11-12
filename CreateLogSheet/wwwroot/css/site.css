@@ -1,0 +1,536 @@
+﻿
+@font-face {
+    font-family: 'vazir-light';
+    src: url('../fonts/Vazir-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    color: #333;
+    text-align: right;
+}
+
+h3 {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* کارت برای فیلترها */
+.filter-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    transition: 0.3s;
+}
+
+    .filter-card:hover {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    }
+
+label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+/* استایل select2 */
+.select2-container--default .select2-selection--multiple {
+    background-color: #f9fafb;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    min-height: 45px;
+    padding: 5px;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 3px 8px;
+        margin-top: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #fff;
+        margin-left: 5px;
+    }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #ffdddd;
+        }
+
+>
+/* کانتینر جدول */
+.table-responsive {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-top: 30px;
+    transition: 0.3s;
+}
+
+.table-responsive:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* جدول اصلی */
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 8px; /* فاصله بین ردیف‌ها */
+    background: transparent;
+}
+
+    /* هدر جدول */
+    .table thead {
+        background: linear-gradient(90deg, #007bff, #0d6efd);
+        color: #fff;
+        border-radius: 12px;
+    }
+
+        .table thead th {
+            border: none;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+    /* سطرها */
+    .table tbody tr {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+    }
+
+        .table tbody tr:hover {
+            background-color: #e9f2ff;
+            transform: scale(1.01);
+            box-shadow: 0 2px 10px rgba(13, 110, 253, 0.15);
+        }
+
+    /* سلول‌ها */
+    .table td {
+        border: none;
+        padding: 12px;
+        vertical-align: middle;
+        color: #333;
+        font-size: 14px;
+    }
+
+        /* شماره ردیف */
+        .table td:first-child {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+    /* افکت هنگام نبود داده */
+    .table tbody .no-data {
+        color: #dc3545;
+        font-weight: 600;
+        background-color: #fff3f3;
+    }
+
+/* جهت راست‌چین و فونت فارسی */
+.table {
+    direction: rtl;
+    text-align: right;
+    font-family: "Vazirmatn", "IRANSans", sans-serif;
+}
+
+
+>
+/* ظاهر کلی سلکت */
+.select2-container--default .select2-selection--multiple {
+    background-color: #f8f9fc;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 5px;
+    min-height: 42px;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* وقتی فوکوس می‌گیرد */
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    background-color: #fff;
+}
+
+/* تگ‌های انتخاب شده (pill style) */
+.select2-container--default .select2-selection__choice {
+    background: linear-gradient(135deg, #0d6efd, #3a8bfd);
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 12px 5px 8px;
+    margin: 4px 4px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, 0.3);
+    transition: 0.2s ease-in-out;
+}
+
+    /* hover روی هر تگ */
+    .select2-container--default .select2-selection__choice:hover {
+        background: linear-gradient(135deg, #0b5ed7, #2a72f7);
+        transform: scale(1.05);
+    }
+
+/* دکمه حذف × */
+.select2-container--default .select2-selection__choice__remove {
+    color: #fff;
+    margin-left: 8px;
+    margin-right: 2px;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    transition: 0.2s;
+}
+
+    .select2-container--default .select2-selection__choice__remove:hover {
+        color: #ffd700;
+        transform: scale(1.2);
+    }
+
+/* متن داخل تگ */
+.select2-container--default .select2-selection__choice__display {
+    color: #fff !important;
+}
+
+/* فاصله بین تگ‌ها */
+.select2-container .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* فونت فارسی و راست‌چین */
+.select2-container {
+    direction: rtl;
+    text-align: right;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+/* Placeholder */
+.select2-selection__placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* فاصله بین بخش‌ها */
+.container-fluid {
+    padding: 40px;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+body {
+    font-family: 'vazir-light';
+}
+html {
+    font-size: 14px;
+    font-family: 'vazir-light' ;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.sheet-data {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+    /* کارت‌ها */
+    .sheet-data .card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .sheet-data .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+    /* هدر کارت */
+    .sheet-data .card-header {
+        background: linear-gradient(90deg, #4e73df, #224abe);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        border-bottom: 2px solid #1e40af;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 6px 6px 0 0;
+    }
+
+        .sheet-data .card-header i {
+            transition: transform 0.3s ease;
+        }
+
+    .sheet-data .collapse.show + .card-body,
+    .sheet-data .card-body {
+        background-color: #fff;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* ردیف‌ها */
+    .sheet-data .row {
+        align-items: flex-end;
+    }
+
+    /* inputها */
+    .sheet-data input.form-control {
+        border-radius: 5px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* input-group برای علامت سوال */
+    .sheet-data .input-group-text {
+        background-color: #e9ecef;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        font-weight: bold;
+        color: #495057;
+        transition: background 0.2s;
+    }
+
+        .sheet-data .input-group-text:hover {
+            background-color: #d1d9ff;
+        }
+
+    /* قسمت ثابت (Constant) */
+    .sheet-data .constantClass {
+        background-color: #e2f0fb;
+        border-left: 4px solid #3b82f6;
+        color: #1e3a8a;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* لیبل‌ها */
+    .sheet-data label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    /* برای آیکن chevron هنگام باز و بسته شدن */
+    .sheet-data .card-header.collapsed i {
+        transform: rotate(-90deg);
+        transition: transform 0.3s ease;
+    }
+
+
+.constantClass {
+    background-color: #f0f0f0; /* رنگ پس‌زمینه روشن */
+    border-left: 4px solid #007bff; /* خط رنگی سمت چپ برای تاکید */
+    padding: 10px 15px; /* فاصله داخلی مناسب */
+    font-weight: bold; /* فونت برجسته */
+    border-radius: 6px; /* گوشه‌های گرد */
+    color: #333; /* رنگ متن */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* سایه ملایم */
+}
+
+    .constantClass:hover {
+        background-color: #e6f0ff; /* تغییر رنگ هنگام هاور */
+        cursor: default; /* نشانگر ماوس */
+    }
+
+.input-group-text {
+    cursor: pointer;
+}
+
+
+.sheet-list-col {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    height: 100%;
+}
+
+    /* عنوان ستون */
+    .sheet-list-col h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #1e3a8a;
+        text-align: center;
+    }
+
+    /* لیست Sheets */
+    .sheet-list-col .list-group {
+        max-height: 80vh; /* ارتفاع قابل اسکرول */
+        border: none;
+        padding: 0;
+    }
+
+    /* آیتم‌های لیست */
+    .sheet-list-col .list-group-item {
+        background-color: #fff;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        padding: 10px 12px;
+        font-weight: 500;
+        color: #495057;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        /* هاور روی آیتم‌ها */
+        .sheet-list-col .list-group-item:hover {
+            background-color: #e2f0fb;
+            cursor: pointer;
+            color: #1e3a8a;
+            transform: translateX(3px);
+        }
+
+        /* آیتم انتخاب شده (اختیاری، می‌تونی کلاس active اضافه کنی) */
+        .sheet-list-col .list-group-item.active {
+            background-color: #3b82f6;
+            color: #fff;
+            font-weight: 600;
+        }
+
+    /* اسکرول بار زیبا */
+    .sheet-list-col .list-group::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sheet-list-col .list-group::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 3px;
+    }
+
+    .sheet-list-col .list-group::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+
+/.card-units {
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    overflow: hidden;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+.card-units .card-header {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+.card-units .btn-add-unit {
+    border-radius: 50px;
+    font-size: 0.85rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+/* جدول */
+.table-units {
+    margin-bottom: 0;
+    text-align: center;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+    .table-units th, .table-units td {
+        vertical-align: middle;
+        font-family: "vazir-light", "IRANSans", sans-serif;
+    }
+
+    .table-units th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        font-family: "vazir-light", "IRANSans", sans-serif;
+    }
+
+    .table-units tbody tr:hover {
+        background-color: rgba(13,110,253,0.1);
+    }
+
+/* دکمه‌ها */
+.btn-action {
+    margin-right: 0.25rem;
+    margin-left: 0.25rem;
+    font-size: 0.8rem;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+    .btn-action i {
+        margin-left: 0.25rem;
+    }
+
+.active-sheet {
+    background-color: #0d6efd !important; /* آبی روشن */
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.col-md-10{
+    height:75vh ;
+    overflow:auto ; 
+}
+
+/* استایل برای row اصلی header */
+.header-row {
+    background-color: #f0f8ff; /* رنگ پس‌زمینه ملایم آبی */
+    border-radius: 8px; /* گوشه‌های گرد */
+    padding: 12px 15px; /* فاصله داخلی */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* سایه ملایم */
+    margin-bottom: 20px; /* فاصله از محتوای بعدی */
+    transition: all 0.3s ease; /* تغییرات نرم */
+}
+
+    /* حالت hover روی row */
+    .header-row:hover {
+        background-color: #e0f0ff; /* روشن‌تر هنگام هاور */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* سایه بزرگتر */
+    }

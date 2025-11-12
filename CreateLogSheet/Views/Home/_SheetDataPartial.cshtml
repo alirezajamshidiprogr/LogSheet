@@ -1,0 +1,104 @@
+﻿@model List<CreateLogSheet.Models.MeasurementPoint>
+
+@functions {
+    string ToSafeId(string input) => System.Text.RegularExpressions.Regex.Replace(input ?? "", @"[^a-zA-Z0-9]", "_");
+}
+
+@foreach (var group in Model.GroupBy(r => r.LogSheetHeaderName))
+{
+    var collapseId = "collapse-" + ToSafeId(group.Key);
+    <div class="card mb-3">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center"
+         data-bs-toggle="collapse"
+         href="#@collapseId"
+         role="button"
+         aria-expanded="true"
+         aria-controls="@collapseId"
+         style="cursor:pointer;">
+            <span>@group.Key</span>
+            <span><i class="bi bi-chevron-down"></i></span>
+        </div>
+        <div id="@collapseId" class="collapse show">
+            <div class="card-body">
+                @foreach (var row in group)
+                {
+                    if (row.Characteristic == "Constant")
+                    {
+                        <div class="col-12 mb-2 constantClass">
+                            @($"{row.Description} : {row.Characteristic} >> 38/8")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row mb-2">
+                            <div class="col-2">
+                                <label>FunctionalLocation</label>
+                                <input type="text" class="form-control" value="@row.FunctionalLocation" disabled />
+                            </div>
+                            <div class="col-2">
+                                <label>Description</label>
+                                <input type="text" class="form-control" value="@row.Description" disabled />
+                            </div>
+                            <div class="col-2">
+                                <label>MeasuringPosition</label>
+                                <input type="text" class="form-control" value="@row.MeasuringPosition" disabled />
+                            </div>
+                            <div class="col-1">
+                                <label>Characteristic</label>
+                                <input type="text" class="form-control" value="@row.Characteristic" disabled />
+                            </div>
+                            <div class="col-1">
+                                <label>UnitOfMeasure</label>
+                                <input type="text" class="form-control" value="@row.UnitOfMeasure" disabled />
+                            </div>
+
+                            <div class="col-1">
+                                <label>Morning</label>
+                                <div class="input-group">
+                                    <input type="text" data-shift="M"  class="inputToSave form-control" value="@row.Morning_Value" data-hasChanged="false" data-measuringPointId="@row.Id" data-functionalLocation="@row.FunctionalLocation" data-upperRange="@row.UpperRangeLimit" data-lowerRange="@row.LowerRangeLimit" />
+                                    @if (row.IsCalculated == true)
+                                    {
+                                        <span class="input-group-text p-0 text-center"
+                              data-formula="@row.FormulaResult"
+                              data-formulaRaw="@row.RawFormula"
+                              style="cursor:pointer; width:25px;"
+                              onclick="initializePopovers(this)">?</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <label>Afternoon</label>
+                                <div class="input-group">
+                                    <input type="text" data-shift="A"  class="inputToSave form-control" value="@row.Afternoon_Value" data-hasChanged="false" data-measuringPointId="@row.Id" data-functionalLocation="@row.FunctionalLocation" data-upperRange="@row.UpperRangeLimit" data-lowerRange="@row.LowerRangeLimit" />
+                                    @if (row.IsCalculated == true)
+                                    {
+                                        <span class="input-group-text p-0 text-center"
+                              data-formula="@row.FormulaResult"
+                              data-formulaRaw="@row.RawFormula"
+                              style="cursor:pointer; width:25px;"
+                              onclick="initializePopovers(this)">?</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <label>Night</label>
+                                <div class="input-group">
+                                    <input type="text" data-shift="E"  class="inputToSave form-control" value="@row.Evening_Value" data-hasChanged="false" data-measuringPointId="@row.Id" data-functionalLocation="@row.FunctionalLocation" data-upperRange="@row.UpperRangeLimit" data-lowerRange="@row.LowerRangeLimit" />
+                                    @if (row.IsCalculated == true)
+                                    {
+                                        <span class="input-group-text p-0 text-center"
+                              data-formula="@row.FormulaResult"
+                              data-formulaRaw="@row.RawFormula"
+                              style="cursor:pointer; width:25px;"
+                              onclick="initializePopovers(this)">?</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+

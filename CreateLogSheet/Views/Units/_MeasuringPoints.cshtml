@@ -1,0 +1,54 @@
+﻿@model System.Data.DataTable
+
+<table class="table table-striped table-hover text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>ردیف</th>
+            <th>MeasPoint</th>
+            <th>FunctionalLocation</th>
+            <th>Description</th>
+            <th>MeasuringPosition</th>
+            <th>Characteristic</th>
+            <th>UnitOfMeasure</th>
+            <th>DecimalPlaces</th>
+            <th>LowerRangeLimit</th>
+            <th>UpperRangeLimit</th>
+            <th>LogSheetHeaderName</th>
+            <th>IsCalculated</th>
+            <th>FormalueID</th>
+            <th>SheetName</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Rows.Count > 0)
+        {
+            int index = 1;
+            foreach (System.Data.DataRow row in Model.Rows)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@row["MeasPoint"]</td>
+                    <td>@row["FunctionalLocation"]</td>
+                    <td>@row["Description"]</td>
+                    <td>@row["MeasuringPosition"]</td>
+                    <td>@row["Characteristic"]</td>
+                    <td>@row["UnitOfMeasure"]</td>
+                    <td>@row["DecimalPlaces"]</td>
+                    <td>@row["LowerRangeLimit"]</td>
+                    <td>@row["UpperRangeLimit"]</td>
+                    <td>@row["LogSheetHeaderName"]</td>
+                    <td>@row["IsCalculated"]</td>
+                    <td>@row["FormalueID"]</td>
+                    <td>@row["SheetName"]</td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="14" class="text-muted">هیچ Measuring Pointی یافت نشد.</td>
+            </tr>
+        }
+    </tbody>
+</table>

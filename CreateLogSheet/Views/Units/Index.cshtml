@@ -1,0 +1,99 @@
+﻿@model System.Data.DataTable
+
+@{
+    ViewData["Title"] = "لیست واحدها";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="container-fluid my-4">
+    <div class="card card-units shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">لیست واحدها</h5>
+            <a href="#" class="btn btn-light btn-sm btn-add-unit">
+                <i class="bi bi-plus-circle"></i> افزودن واحد جدید
+            </a>
+            <button class="btn btn-light btn-add-unit"
+                    onclick="window.open('@Url.Action("Index", "LogSheetReport")?unitId=3', '_blank')">
+                <i class="bi bi-eye"></i> گزارشات
+            </button>
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover table-units align-middle text-center mb-0">
+                <thead>
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام واحد</th>
+                        <th>نام ناحیه</th>
+                        <th>واحد والد</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Rows.Count > 0)
+                    {
+                        int index = 1;
+                        foreach (System.Data.DataRow row in Model.Rows)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@row["UnitName"].ToString()</td>
+                                <td>@row["AreaName"].ToString()</td>
+                                <td>@row["ParentID"]?.ToString()</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm btn-action"
+                                    onclick="window.open('@Url.Action("Index", "Home")?unitId=@row["UnitId"]', '_blank')">
+                                        <i class="bi bi-eye"></i>  ثبت لاگ شيت 
+                                    </button>
+
+                                    <a href="@Url.Action("Edit", "Units", new { id = row["UnitId"] })" class="btn btn-outline-primary btn-sm btn-action">
+                                        <i class="bi bi-pencil-square"></i> ویرایش
+                                    </a>
+
+                                    <form method="post" action="@Url.Action("Delete", "Units", new { id = row["UnitId"] })" style="display:inline-block;">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm btn-action">
+                                            <i class="bi bi-trash"></i> حذف
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-muted">هیچ واحدی یافت نشد.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-units {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+        .card-units .btn-add-unit {
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+    .table-units tbody tr:hover {
+        background-color: rgba(13,110,253,0.08);
+    }
+
+    .btn-action {
+        margin: 0 0.15rem;
+        font-size: 0.8rem;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

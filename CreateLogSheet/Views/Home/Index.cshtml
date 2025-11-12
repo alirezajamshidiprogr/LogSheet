@@ -1,0 +1,76 @@
+﻿@using CreateLogSheet.Models
+@model List<MeasurementPoint>
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    string ToSafeId(string input) => System.Text.RegularExpressions.Regex.Replace(input ?? "", @"[^a-zA-Z0-9]", "_");
+
+    var sheetGroups = Model.GroupBy(m => m.SheetName).ToList();
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="@Url.Content("~/css/site.css")" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<div class="container-fluid">
+    <div id="formulaPopup" style="position:absolute; display:none; background:#333; color:#fff; padding:6px 10px; border-radius:6px; z-index:1000;"></div>
+
+    <div class="row mb-3 header-row">
+        <div class="col-4 d-flex justify-content-end gap-2">
+            <button type="button" GetSheetData class="btn btn-success" id="saveBtn">ذخیره</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">نوسازی</button>
+        </div>
+        <div class="col-3">
+            <label for="logSheetDate">تاریخ گزارش:</label>
+            <input type="text" id="logSheetDate" class="form-control" placeholder="تاریخ را انتخاب کنید">
+        </div>
+        <div class="col-2">
+            <h4>لاگ شيت واحد تقطير يك</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2 sheet-list-col">
+            <h4>Sheets</h4>
+            <ul class="list-group">
+                @foreach (var sheet in sheetGroups)
+                {
+                    <li class="list-group-item sheet-item" data-sheet="@sheet.Key">@sheet.Key</li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-10">
+            @foreach (var sheet in sheetGroups)
+            {
+                <div class="sheet-data" id="sheet-@ToSafeId(sheet.Key)" style="display:none;" data-active="false"></div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- JS ها با ترتیب صحیح -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/logsheet.js"></script>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            //trackAllInputChanges(this);
+
+
+
+          
+            // Tooltip روی input ها
+            document.addEventListener('focus', function (ev) {
+                const target = ev.target;
+                if (target && target.tagName === 'INPUT') {
+                    DisplayToolTipDate(ev);
+                }
+            }, true);
+
+        });
+    </script>
+}
