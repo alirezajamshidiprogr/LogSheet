@@ -1,0 +1,449 @@
+﻿/* ========== استایل اصلی کارت و کانتینر ========== */
+@font-face {
+    font-family: 'vazir-light';
+    src: url('../fonts/Vazir-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+.card.shadow-sm.border-0 {
+    border-radius: 20px !important;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+    border-bottom: none !important;
+    padding: 1rem 1.5rem !important;
+}
+
+    .card-header.bg-primary h5 {
+        font-weight: 600;
+        letter-spacing: -0.3px;
+    }
+
+    .card-header.bg-primary .btn-light {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 12px;
+        padding: 6px 18px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .card-header.bg-primary .btn-light:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+.card-body.bg-light {
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9) !important;
+}
+
+/* ========== استایل شیت کارت ========== */
+.sheet-card {
+    border-radius: 16px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+    .sheet-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12) !important;
+    }
+
+.sheet-header {
+    background: linear-gradient(95deg, #ffffff, #fefefe) !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    padding: 1rem 1.25rem !important;
+}
+
+    .sheet-header i.bi-file-earmark-text {
+        filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.2));
+    }
+
+    .sheet-header strong {
+        color: #1e293b;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+.order-box {
+    background: #f1f5f9;
+    padding: 4px 12px;
+    border-radius: 30px;
+}
+
+    .order-box span {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: #64748b;
+    }
+
+    .order-box input {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+/* ========== دکمه‌های اکشن شیت ========== */
+.btn-outline-primary {
+    border-radius: 10px !important;
+    border: 1px solid #3b82f6;
+    color: #3b82f6;
+    transition: all 0.2s ease;
+}
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border-color: transparent;
+        transform: translateY(-1px);
+    }
+
+.btn-outline-danger {
+    border-radius: 10px !important;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    transition: all 0.2s ease;
+}
+
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-color: transparent;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+/* ========== گروه کارت ========== */
+.group-card {
+    border-radius: 14px !important;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    margin-bottom: 1rem;
+}
+
+    .group-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+.group-header {
+    background: linear-gradient(95deg, #f8fafc, #f1f5f9) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 0.85rem 1.25rem !important;
+}
+
+    .group-header i.bi-folder2-open {
+        filter: drop-shadow(0 1px 3px rgba(245, 158, 11, 0.3));
+    }
+
+    .group-header strong {
+        color: #334155;
+        font-size: 0.95rem;
+    }
+
+.badge.bg-info {
+    background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* ========== دکمه‌های گروه ========== */
+.btn-outline-info {
+    border-radius: 8px !important;
+    border: 1px solid #06b6d4;
+    color: #0891b2;
+}
+
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+        border-color: transparent;
+        color: white;
+    }
+
+.btn-outline-warning {
+    border-radius: 8px !important;
+    border: 1px solid #f59e0b;
+    color: #d97706;
+}
+
+    .btn-outline-warning:hover {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border-color: transparent;
+        color: white;
+    }
+
+/* ========== جدول نقاط ========== */
+.table {
+    font-size: 0.85rem;
+}
+
+    .table thead {
+        background: linear-gradient(95deg, #f1f5f9, #e2e8f0);
+    }
+
+        .table thead th {
+            font-weight: 600;
+            color: #334155;
+            padding: 10px 12px;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+    .table tbody tr {
+        transition: all 0.15s ease;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+    .table tbody td {
+        padding: 10px 12px;
+        vertical-align: middle;
+    }
+
+.point-row i.bi-dot {
+    color: #3b82f6;
+    font-size: 1.2rem;
+}
+
+/* ========== فرم کنترل ========== */
+.form-control-sm {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+    .form-control-sm:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+/* ========== دکمه افزودن گروه و نقطه ========== */
+.btn-outline-success {
+    border-radius: 30px !important;
+    border: 1px solid #10b981;
+    color: #059669;
+    padding: 6px 18px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    .btn-outline-success:hover {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-color: transparent;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-success i {
+        font-size: 0.9rem;
+    }
+
+/* ========== دکمه افزودن شیت در پایین ========== */
+#addNewSheetBottomBtn {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: 2px dashed #cbd5e1;
+    border-radius: 60px;
+    padding: 12px 28px;
+    font-weight: 600;
+    color: #64748b;
+    transition: all 0.25s ease;
+}
+
+    #addNewSheetBottomBtn:hover {
+        border-color: #3b82f6;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        color: #2563eb;
+        transform: translateY(-2px);
+    }
+
+/* ========== دکمه ذخیره ========== */
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 10px 28px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease;
+}
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+    }
+
+/* ========== انیمیشن‌ها ========== */
+.sheet-card, .group-card {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== اسکرول بار سفارشی ========== */
+.groups-container::-webkit-scrollbar,
+.points-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.groups-container::-webkit-scrollbar-track,
+.points-container::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.groups-container::-webkit-scrollbar-thumb,
+.points-container::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+    .groups-container::-webkit-scrollbar-thumb:hover,
+    .points-container::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+    }
+
+/* ========== وضعیت خالی (Empty State) ========== */
+.text-muted i.bi-inbox,
+.text-muted i.bi-folder-x {
+    opacity: 0.5;
+}
+
+.text-muted .btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 30px;
+    padding: 8px 20px;
+}
+
+/* ========== ریسپانسیو ========== */
+@media (max-width: 768px) {
+    .sheet-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start !important;
+    }
+
+        .sheet-header .d-flex:first-child {
+            flex-wrap: wrap;
+        }
+
+    .group-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start !important;
+    }
+
+    .table {
+        font-size: 0.7rem;
+    }
+
+        .table thead th {
+            padding: 6px 8px;
+        }
+
+        .table tbody td {
+            padding: 6px 8px;
+        }
+
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+
+    .order-box {
+        margin-top: 5px;
+    }
+}
+
+/* ========== افکت‌های پیشرفته ========== */
+.sheet-card, .group-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== استایل مودال ========== */
+.modal-content {
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+    .modal-header .modal-title {
+        font-weight: 600;
+    }
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 1.5rem;
+}
+
+/* ========== فرم در مودال ========== */
+.modal-body .form-label {
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.modal-body .form-control,
+.modal-body .form-select {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+}
+
+    .modal-body .form-control:focus,
+    .modal-body .form-select:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+.modal-body .form-check-input:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* ========== Badge فرمولی ========== */
+.badge.bg-warning {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    color: #78350f;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+}

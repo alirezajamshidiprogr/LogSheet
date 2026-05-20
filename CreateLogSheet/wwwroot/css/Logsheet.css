@@ -1,0 +1,1021 @@
+﻿@font-face {
+    font-family: 'vazir-light';
+    src: url('../fonts/Vazir-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    color: #333;
+    text-align: right;
+}
+
+h3 {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* کارت برای فیلترها */
+.filter-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    transition: 0.3s;
+}
+
+    .filter-card:hover {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    }
+
+label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+/* استایل select2 */
+.select2-container--default .select2-selection--multiple {
+    background-color: #f9fafb;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    min-height: 45px;
+    padding: 5px;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 3px 8px;
+        margin-top: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #fff;
+        margin-left: 5px;
+    }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #ffdddd;
+        }
+
+>
+/* کانتینر جدول */
+.table-responsive {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-top: 30px;
+    transition: 0.3s;
+}
+
+.table-responsive:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* جدول اصلی */
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 8px; /* فاصله بین ردیف‌ها */
+    background: transparent;
+}
+
+    /* هدر جدول */
+    .table thead {
+        background: linear-gradient(90deg, #007bff, #0d6efd);
+        color: #fff;
+        border-radius: 12px;
+    }
+
+        .table thead th {
+            border: none;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+    /* سطرها */
+    .table tbody tr {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+    }
+
+        .table tbody tr:hover {
+            background-color: #e9f2ff;
+            transform: scale(1.01);
+            box-shadow: 0 2px 10px rgba(13, 110, 253, 0.15);
+        }
+
+    /* سلول‌ها */
+    .table td {
+        border: none;
+        padding: 12px;
+        vertical-align: middle;
+        color: #333;
+        font-size: 14px;
+    }
+
+        /* شماره ردیف */
+        .table td:first-child {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+    /* افکت هنگام نبود داده */
+    .table tbody .no-data {
+        color: #dc3545;
+        font-weight: 600;
+        background-color: #fff3f3;
+    }
+
+/* جهت راست‌چین و فونت فارسی */
+.table {
+    direction: rtl;
+    text-align: right;
+    font-family: "Vazirmatn", "IRANSans", sans-serif;
+}
+
+
+>
+/* ظاهر کلی سلکت */
+.select2-container--default .select2-selection--multiple {
+    background-color: #f8f9fc;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 5px;
+    min-height: 42px;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* وقتی فوکوس می‌گیرد */
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    background-color: #fff;
+}
+
+/* تگ‌های انتخاب شده (pill style) */
+.select2-container--default .select2-selection__choice {
+    background: linear-gradient(135deg, #0d6efd, #3a8bfd);
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 12px 5px 8px;
+    margin: 4px 4px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, 0.3);
+    transition: 0.2s ease-in-out;
+}
+
+    /* hover روی هر تگ */
+    .select2-container--default .select2-selection__choice:hover {
+        background: linear-gradient(135deg, #0b5ed7, #2a72f7);
+        transform: scale(1.05);
+    }
+
+/* دکمه حذف × */
+.select2-container--default .select2-selection__choice__remove {
+    color: #fff;
+    margin-left: 8px;
+    margin-right: 2px;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    transition: 0.2s;
+}
+
+    .select2-container--default .select2-selection__choice__remove:hover {
+        color: #ffd700;
+        transform: scale(1.2);
+    }
+
+/* متن داخل تگ */
+.select2-container--default .select2-selection__choice__display {
+    color: #fff !important;
+}
+
+/* فاصله بین تگ‌ها */
+.select2-container .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* فونت فارسی و راست‌چین */
+.select2-container {
+    direction: rtl;
+    text-align: right;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+/* Placeholder */
+.select2-selection__placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+
+.select2-container {
+    width: 100% !important;
+}
+
+body {
+    font-family: 'vazir-light';
+}
+
+html {
+    font-size: 14px;
+    font-family: 'vazir-light';
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.sheet-data {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+    /* کارت‌ها */
+    .sheet-data .card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .sheet-data .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+    /* هدر کارت */
+    .sheet-data .card-header {
+        background: linear-gradient(90deg, #4e73df, #224abe);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        border-bottom: 2px solid #1e40af;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 6px 6px 0 0;
+    }
+
+        .sheet-data .card-header i {
+            transition: transform 0.3s ease;
+        }
+
+    .sheet-data .collapse.show + .card-body,
+    .sheet-data .card-body {
+        background-color: #fff;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* ردیف‌ها */
+    .sheet-data .row {
+        align-items: flex-end;
+    }
+
+    /* inputها */
+    .sheet-data input.form-control {
+        border-radius: 5px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* input-group برای علامت سوال */
+    .sheet-data .input-group-text {
+        background-color: #fff2ac;
+        border-radius: 0 5px 5px 0;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #495057;
+        transition: background 0.2s;
+        text-align: center !important;
+        padding: 5px !important
+    }
+
+        .sheet-data .input-group-text:hover {
+            background-color: #d1d9ff;
+        }
+
+    /* قسمت ثابت (Constant) */
+    .sheet-data .constantClass {
+        background-color: #e2f0fb;
+        border-left: 4px solid #3b82f6;
+        color: #1e3a8a;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        text-align: left;
+        text-decoration: underline;
+    }
+
+    /* لیبل‌ها */
+    .sheet-data label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    /* برای آیکن chevron هنگام باز و بسته شدن */
+    .sheet-data .card-header.collapsed i {
+        transform: rotate(-90deg);
+        transition: transform 0.3s ease;
+    }
+
+
+.constantClass {
+    background-color: #f0f0f0; /* رنگ پس‌زمینه روشن */
+    border-left: 4px solid #007bff; /* خط رنگی سمت چپ برای تاکید */
+    padding: 10px 15px; /* فاصله داخلی مناسب */
+    font-weight: bold; /* فونت برجسته */
+    border-radius: 6px; /* گوشه‌های گرد */
+    color: #333; /* رنگ متن */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* سایه ملایم */
+}
+
+    .constantClass:hover {
+        background-color: #e6f0ff; /* تغییر رنگ هنگام هاور */
+        cursor: default; /* نشانگر ماوس */
+    }
+
+.input-group-text {
+    cursor: pointer;
+}
+
+
+.sheet-list-col {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    height: 100%;
+}
+
+    /* عنوان ستون */
+    .sheet-list-col h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #1e3a8a;
+        text-align: center;
+    }
+
+    /* لیست Sheets */
+    .sheet-list-col .list-group {
+        max-height: 80vh; /* ارتفاع قابل اسکرول */
+        border: none;
+        padding: 0;
+    }
+
+    /* آیتم‌های لیست */
+    .sheet-list-col .list-group-item {
+        background-color: #fff;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        padding: 10px 12px;
+        font-weight: 500;
+        color: #495057;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        /* هاور روی آیتم‌ها */
+        .sheet-list-col .list-group-item:hover {
+            background-color: #e2f0fb;
+            cursor: pointer;
+            color: #1e3a8a;
+            transform: translateX(3px);
+        }
+
+        /* آیتم انتخاب شده (اختیاری، می‌تونی کلاس active اضافه کنی) */
+        .sheet-list-col .list-group-item.active {
+            background-color: #3b82f6;
+            color: #fff;
+            font-weight: 600;
+        }
+
+    /* اسکرول بار زیبا */
+    .sheet-list-col .list-group::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sheet-list-col .list-group::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 3px;
+    }
+
+    .sheet-list-col .list-group::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+
+/.card-units {
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    overflow: hidden;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+.card-units .card-header {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+.card-units .btn-add-unit {
+    border-radius: 50px;
+    font-size: 0.85rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+/* جدول */
+.table-units {
+    margin-bottom: 0;
+    text-align: center;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+    .table-units th, .table-units td {
+        vertical-align: middle;
+        font-family: "vazir-light", "IRANSans", sans-serif;
+    }
+
+    .table-units th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        font-family: "vazir-light", "IRANSans", sans-serif;
+    }
+
+    .table-units tbody tr:hover {
+        background-color: rgba(13,110,253,0.1);
+    }
+
+/* دکمه‌ها */
+.btn-action {
+    margin-right: 0.25rem;
+    margin-left: 0.25rem;
+    font-size: 0.8rem;
+    font-family: "vazir-light", "IRANSans", sans-serif;
+}
+
+    .btn-action i {
+        margin-left: 0.25rem;
+    }
+
+.active-sheet {
+    background-color: #0d6efd !important; /* آبی روشن */
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.col-md-10 {
+    height: 75vh;
+    overflow: auto;
+}
+
+/* استایل برای row اصلی header */
+.header-row {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f2a3f 100%) !important;
+    border-radius: 16px !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    border: 1px solid rgba(96, 165, 250, 0.2) !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(4px);
+}
+
+    .header-row:hover {
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2) !important;
+        transform: translateY(-2px);
+    }
+
+    /* عنوان هدر */
+    .header-row h4 {
+        color: #e2e8f0 !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+        padding: 0.5rem 0 !important;
+        text-align: center !important;
+        letter-spacing: 0.5px !important;
+        position: relative !important;
+        display: inline-block !important;
+    }
+
+        .header-row h4::before {
+            content: '📋';
+            margin-left: 8px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header-row h4::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            border-radius: 2px;
+        }
+
+/* دکمه ذخیره */
+#saveBtn {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    border: none !important;
+    padding: 0.6rem 1.8rem !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+    letter-spacing: 0.5px !important;
+}
+
+    #saveBtn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+        background: linear-gradient(135deg, #059669, #047857) !important;
+    }
+
+    #saveBtn:active {
+        transform: translateY(0) !important;
+    }
+
+/* دکمه نوسازی */
+#resetBtn {
+    background: linear-gradient(135deg, #6c757d, #495057) !important;
+    border: none !important;
+    padding: 0.6rem 1.8rem !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3) !important;
+    letter-spacing: 0.5px !important;
+}
+
+    #resetBtn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4) !important;
+        background: linear-gradient(135deg, #5a6268, #3d4246) !important;
+    }
+
+    #resetBtn:active {
+        transform: translateY(0) !important;
+    }
+
+/* فیلد تاریخ */
+#logSheetDate {
+    background: rgba(15, 42, 63, 0.9) !important;
+    border: 1px solid rgba(96, 165, 250, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 0.6rem 1rem !important;
+    color: #e2e8f0 !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+}
+
+    #logSheetDate:hover {
+        border-color: #60a5fa !important;
+        background: rgba(15, 42, 63, 1) !important;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1) !important;
+    }
+
+    #logSheetDate:focus {
+        outline: none !important;
+        border-color: #60a5fa !important;
+        box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2) !important;
+        background: #0f2a3f !important;
+    }
+
+/* آیکون تقویم برای فیلد تاریخ (اختیاری) */
+#logSheetDate {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: left 12px center !important;
+    padding-left: 2.5rem !important;
+}
+
+/* ریسپانسیو برای موبایل و تبلت */
+@media (max-width: 768px) {
+    .header-row {
+        padding: 1rem !important;
+        text-align: center !important;
+    }
+
+        .header-row .col-4,
+        .header-row .col-3,
+        .header-row .col-2 {
+            width: 100% !important;
+            margin-bottom: 0.75rem !important;
+            text-align: center !important;
+        }
+
+        .header-row .d-flex {
+            justify-content: center !important;
+        }
+
+    #saveBtn, #resetBtn {
+        padding: 0.5rem 1.2rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    .header-row h4 {
+        font-size: 0.95rem !important;
+    }
+
+        .header-row h4::before {
+            font-size: 0.9rem;
+        }
+}
+
+/* برای تبلت */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .header-row .col-4 {
+        width: 35% !important;
+    }
+
+    .header-row .col-3 {
+        width: 30% !important;
+    }
+
+    .header-row .col-2 {
+        width: 25% !important;
+    }
+}
+
+/* انیمیشن لودینگ برای دکمه ذخیره (در صورت نیاز) */
+#saveBtn.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+    #saveBtn.loading::after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        top: 50%;
+        right: 15px;
+        margin-top: -9px;
+        border: 2px solid white;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 0.6s linear infinite;
+    }
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* حالت خطا برای فیلد تاریخ */
+#logSheetDate.error {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.col-1-custom {
+    flex: 0 0 6.5%;
+    max-width: 6.5%;
+}
+
+Textarea {
+    direction: rtl;
+}
+
+.summary-footer-box {
+    background: #f7f7f7;
+    border-radius: 6px;
+}
+
+.summary-footer {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+.summary-shift-box {
+    background: #1f0655;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.summary-group-title {
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.summary-item .sum-cell {
+    font-weight: 700;
+}
+
+.summary-sep {
+    margin: 0 5px;
+    color: #888;
+}
+
+
+
+.summary-group-title {
+    font-weight: 700;
+    color: #fff;
+}
+
+.summary-item {
+    color: #fff;
+}
+
+    .summary-item .sum-cell {
+        font-weight: 700;
+        color: #fffb00; /* آبی شیک */
+    }
+
+.summary-sep {
+    color: #aaa;
+    padding: 0 4px;
+    font-weight: 400;
+}
+
+/* ===== تم صنعتی آبی برای لاگ‌شیت (اضافه شده به استایل‌های موجود) ===== */
+
+/* متغیرهای رنگی آبی صنعتی */
+:root {
+    --industrial-dark: #0a1628;
+    --industrial-navbar: #0c1a2b;
+    --industrial-card-bg: #0f1c2e;
+    --industrial-border: #1e3a5f;
+    --industrial-blue-primary: #2c5f8a;
+    --industrial-blue-light: #4a7c9c;
+    --industrial-blue-soft: rgba(44, 95, 138, 0.15);
+    --industrial-text: #e2e8f0;
+    --industrial-text-muted: #8ba3b8;
+    --industrial-success: #106b5e;
+    --industrial-success-hover: #0d574c;
+}
+
+/* تغییرات پایه در حالت صنعتی (بدون تداخل با استایل‌های قبلی) */
+body.industrial-mode {
+    background: var(--industrial-dark) !important;
+    color: var(--industrial-text) !important;
+}
+
+/* هدر صنعتی - اگر کلاس industrial-header اضافه شود */
+.industrial-header {
+    background: var(--industrial-navbar) !important;
+    border-bottom: 2px solid var(--industrial-blue-primary) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+    .industrial-header .navbar-brand {
+        color: var(--industrial-blue-light) !important;
+    }
+
+    .industrial-header .nav-link {
+        color: var(--industrial-text-muted) !important;
+    }
+
+        .industrial-header .nav-link:hover {
+            color: var(--industrial-blue-light) !important;
+        }
+
+/* کارت‌های لاگ‌شیت با تم صنعتی (در صورت اضافه کردن کلاس industrial) */
+.sheet-data.industrial .card {
+    background: var(--industrial-card-bg) !important;
+    border: 1px solid var(--industrial-border) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.sheet-data.industrial .card-header {
+    background: linear-gradient(135deg, var(--industrial-blue-primary), var(--industrial-dark)) !important;
+    border-bottom: 1px solid var(--industrial-blue-light) !important;
+    color: var(--industrial-text) !important;
+}
+
+.sheet-data.industrial .card-body {
+    background: var(--industrial-card-bg) !important;
+}
+
+.sheet-data.industrial .form-control {
+    background: #0a1420 !important;
+    border-color: var(--industrial-border) !important;
+    color: var(--industrial-text) !important;
+}
+
+    .sheet-data.industrial .form-control:disabled,
+    .sheet-data.industrial .form-control[readonly] {
+        background: #0a0f18 !important;
+        color: var(--industrial-text-muted) !important;
+    }
+
+.sheet-data.industrial .input-group-text {
+    background: var(--industrial-blue-primary) !important;
+    border-color: var(--industrial-border) !important;
+    color: white !important;
+}
+
+    .sheet-data.industrial .input-group-text:hover {
+        background: var(--industrial-blue-light) !important;
+    }
+
+.sheet-data.industrial .constantClass {
+    background: var(--industrial-blue-soft) !important;
+    border-left-color: var(--industrial-blue-primary) !important;
+    color: var(--industrial-text-muted) !important;
+}
+
+/* سایدبار صنعتی */
+.sheet-list-col.industrial {
+    background: var(--industrial-navbar) !important;
+    border: 1px solid var(--industrial-border) !important;
+}
+
+    .sheet-list-col.industrial h4 {
+        color: var(--industrial-blue-light) !important;
+        border-bottom-color: var(--industrial-border) !important;
+    }
+
+    .sheet-list-col.industrial .list-group-item {
+        background: transparent !important;
+        color: var(--industrial-text-muted) !important;
+        border-bottom-color: var(--industrial-border) !important;
+    }
+
+        .sheet-list-col.industrial .list-group-item:hover {
+            background: var(--industrial-blue-soft) !important;
+            color: var(--industrial-text) !important;
+        }
+
+        .sheet-list-col.industrial .list-group-item.active-sheet {
+            background: var(--industrial-blue-primary) !important;
+            color: white !important;
+        }
+
+/* هدر ردیف صنعتی */
+.header-row.industrial {
+    background: var(--industrial-navbar) !important;
+    border: 1px solid var(--industrial-border) !important;
+}
+
+    .header-row.industrial h4 {
+        color: var(--industrial-blue-light) !important;
+        border-right-color: var(--industrial-blue-primary) !important;
+    }
+
+/* دکمه‌های صنعتی */
+.btn-industrial-primary {
+    background: var(--industrial-blue-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+    .btn-industrial-primary:hover {
+        background: var(--industrial-blue-light) !important;
+        transform: translateY(-1px);
+    }
+
+.btn-industrial-success {
+    background: var(--industrial-success) !important;
+    border: none !important;
+    color: white !important;
+}
+
+    .btn-industrial-success:hover {
+        background: var(--industrial-success-hover) !important;
+    }
+
+.btn-industrial-secondary {
+    background: #2d3748 !important;
+    border: none !important;
+    color: var(--industrial-text) !important;
+}
+
+    .btn-industrial-secondary:hover {
+        background: #374151 !important;
+    }
+
+/* فیلد تاریخ صنعتی */
+#logSheetDate.industrial {
+    background: #0a1420 !important;
+    border-color: var(--industrial-border) !important;
+    color: var(--industrial-text) !important;
+}
+
+/* سامری باکس صنعتی */
+.summery-footer-box.industrial {
+    background: var(--industrial-card-bg) !important;
+    border-color: var(--industrial-border) !important;
+}
+
+    .summery-footer-box.industrial .summary-shift-box {
+        background: var(--industrial-blue-soft) !important;
+        border-color: var(--industrial-border) !important;
+    }
+
+    .summery-footer-box.industrial .summary-group-title {
+        color: var(--industrial-blue-light) !important;
+    }
+
+    .summery-footer-box.industrial .summary-item {
+        color: var(--industrial-text-muted) !important;
+    }
+
+    .summery-footer-box.industrial .sum-cell {
+        color: var(--industrial-blue-light) !important;
+    }
+
+/* اسکرول بار صنعتی */
+.industrial-mode ::-webkit-scrollbar-track {
+    background: var(--industrial-dark) !important;
+}
+
+.industrial-mode ::-webkit-scrollbar-thumb {
+    background: var(--industrial-blue-primary) !important;
+}
+
+/* می‌توانید با افزودن کلاس industrial-mode به body، کل صفحه را صنعتی کنید */
+/* مثال: <body class="industrial-mode"> */
+
+/* یا فقط بخش‌های خاص را با کلاس industrial جداگانه استایل دهید */

@@ -1,0 +1,202 @@
+﻿@model List<CreateLogSheet.Models.SheetViewModel>
+
+@{
+    ViewData["Title"] = "تنظیمات ساختار لاگ شیت";
+}
+
+<link href="~/css/logsheetmasterdataparamter.css" rel="stylesheet" />
+
+<style>
+    .navbar {
+        display:none ;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-diagram-3"></i> مدیریت سلسله مراتبی شیت‌ها، گروه‌ها و نقاط اندازه‌گیری
+            </h5>
+            <button class="btn btn-light btn-sm" id="addNewSheetBtn">
+                <i class="bi bi-plus-circle"></i> افزودن شیت جدید
+            </button>
+        </div>
+        <div class="card-body bg-light">
+
+            <!-- لیست شیت‌ها -->
+            <div class="sheets-container" id="sheets-container">
+                <div class="text-center text-muted p-5" id="emptySheetsMessage">
+                    <i class="bi bi-inbox fs-1"></i>
+                    <p class="mt-2">هیچ شیتی تعریف نشده است</p>
+                    <button class="btn btn-primary btn-sm" id="addFirstSheetBtn">
+                        <i class="bi bi-plus-circle"></i> افزودن اولین شیت
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-end">
+                <button type="button" class="btn btn-success px-4" id="saveAllOrders">
+                    <i class="bi bi-save"></i> ذخیره همه تغییرات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal برای افزودن/ویرایش شیت -->
+<div class="modal fade" id="sheetModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="bi bi-file-earmark-plus"></i> افزودن شیت جدید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label>نام شیت <span class="text-danger">*</span></label>
+                    <input type="text" id="sheetName" class="form-control" placeholder="مثال: CDU1-FM-04" />
+                </div>
+                <div class="mb-3">
+                    <label>ترتیب (Order)</label>
+                    <input type="number" id="sheetOrder" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary" id="saveSheetBtn">ذخیره شیت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal برای افزودن/ویرایش گروه -->
+<div class="modal fade" id="groupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="bi bi-folder-plus"></i> مدیریت گروه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editGroupId" />
+                <input type="hidden" id="currentSheetId" />
+                <div class="mb-3">
+                    <label>نام گروه <span class="text-danger">*</span></label>
+                    <input type="text" id="groupName" class="form-control" placeholder="مثال: برج تقطیر، کوره، ..." />
+                </div>
+                <div class="mb-3">
+                    <label>سامری (HeaderSummery) - اختیاری</label>
+                    <textarea id="groupSummery" class="form-control" rows="2" placeholder="توضیحات سامری"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label>ترتیب</label>
+                    <input type="number" id="groupOrder" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary" id="saveGroupBtn">ذخیره گروه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal برای افزودن/ویرایش نقطه اندازه‌گیری با فیلدهای کامل -->
+<div class="modal fade" id="pointModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title"><i class="bi bi-dot"></i> مدیریت نقطه اندازه‌گیری</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editPointId" />
+                <input type="hidden" id="currentHeaderId" />
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label>توضیحات (Description) <span class="text-danger">*</span></label>
+                        <input type="text" id="pointDescription" class="form-control" placeholder="مثال: فشار بالای برج، دمای خروجی، ..." />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>موقعیت اندازه‌گیری (MeasuringPosition)</label>
+                        <input type="text" id="pointMeasuringPosition" class="form-control" placeholder="مثال: PRC-139, TI-223, FR-136" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>خصوصیت (Characteristic)</label>
+                        <select id="pointCharacteristic" class="form-select">
+                            <option value="Pressure">فشار (Pressure)</option>
+                            <option value="Temperature">دما (Temperature)</option>
+                            <option value="Flow">جریان (Flow)</option>
+                            <option value="Level">سطح (Level)</option>
+                            <option value="Analysis">آنالیز (Analysis)</option>
+                            <option value="Other">سایر (Other)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>واحد اندازه‌گیری (UnitOfMeasure)</label>
+                        <input type="text" id="pointUnitOfMeasure" class="form-control" placeholder="مثال: bar, °C, CMH, kg/hr" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>ترتیب</label>
+                        <input type="number" id="pointOrder" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>بازه بالا (Upper Range)</label>
+                        <input type="text" id="pointUpperRange" class="form-control" placeholder="مثال: 2/5, 205" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>بازه پایین (Lower Range)</label>
+                        <input type="text" id="pointLowerRange" class="form-control" placeholder="مثال: 0/8, 40" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="pointIsFormula" />
+                            <label class="form-check-label" for="pointIsFormula">
+                                مقدار این نقطه فرمولی است (با کلیک روی علامت سوال محاسبه شود)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="formulaSection" style="display: none;">
+                    <div class="col-md-12 mb-3">
+                        <label>فرمول (Formula Raw)</label>
+                        <input type="text" id="pointFormulaRaw" class="form-control" placeholder="مثال:  * " />
+                        <small class="text-muted">از برای مقدار وارد شده توسط کاربر و  برای مقادیر ثابت استفاده کنید</small>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>مقدار ثابت (Constant Value)</label>
+                        <input type="text" id="pointConstantValue" class="form-control" placeholder="مثال: 5.710" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary" id="savePointBtn">ذخیره نقطه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/logsheetmasterdataparamter.js"></script>
+    <script>
+
+    </script>
+}

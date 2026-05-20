@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace CreateLogSheet.Services
 {
@@ -62,14 +63,26 @@ namespace CreateLogSheet.Services
                 conn.Open();
 
                 // کوئری پایه
-                string query = @"select Measuring_Point.*,Units.UnitName [OperationalUnit] from Units left join Measuring_Point on Measuring_Point.UnitId = Units.id where ParentID is not null and Description is not null  ";
+                string query = @" SELECT 
+                        mp.Id AS [Id],
+						mp.[Description],
+						s.SheetName ,
+						sh.Name AS LogSheetHeaderName,
+						mp.MeasuringPosition,
+						mp.Characteristic , 
+						mp.UnitofMeasure,
+						UnitId
+                    FROM Sheet s
+                    LEFT JOIN SheetHeader sh ON sh.SheetId = s.Id
+                    LEFT JOIN Measuring_Point mp ON mp.SheetHeaderId = CAST(sh.Id AS NVARCHAR(255))
+                     where Description is not null";
 
                 // 🧩 فیلترهای داینامیک
                 if (sheetNames != null && sheetNames.Any())
                     query += " AND SheetName IN (" + string.Join(",", sheetNames.Select((s, i) => "@sheet" + i)) + ")";
 
                 if (logSheetHeaderNames != null && logSheetHeaderNames.Any())
-                    query += " AND LogSheetHeaderName IN (" + string.Join(",", logSheetHeaderNames.Select((s, i) => "@header" + i)) + ")";
+                    query += " AND Name IN (" + string.Join(",", logSheetHeaderNames.Select((s, i) => "@header" + i)) + ")";
 
                 if (descriptions != null && descriptions.Any())
                     query += " AND (" + string.Join(" OR ", descriptions.Select((s, i) => "Description LIKE '%' + @desc" + i + " + '%'")) + ")";
@@ -141,8 +154,8 @@ namespace CreateLogSheet.Services
                 MeasuringPosition = row.Field<string>("MeasuringPosition") ?? string.Empty,
                 Characteristic = row.Field<string>("Characteristic") ?? string.Empty,
                 UnitOfMeasure = row.Field<string>("UnitOfMeasure") ?? string.Empty,
-                OperationalUnit = row.Field<string?>("OperationalUnit") ?? string.Empty, // ← اضافه شد
-                UnitId = row.Field<int>("UnitId")
+                //OperationalUnit = row.Field<string?>("OperationalUnit") ?? string.Empty, // ← اضافه شد
+                UnitId = row.Field<int>("UnitId"),
             };
         }
 
@@ -257,7 +270,11 @@ WHEN NOT MATCHED THEN
                 Afternoon_Value = FormatValue(row.Field<string?>("Afternoon_Value")),
                 Evening_Value = FormatValue(row.Field<string?>("Evening_Value")),
                 UnitId = row.Field<int>("UnitId"),
-            };
+                SheetOrder = row.Field<byte>("SheetOrder"),
+                SheetHeaderOrder = row.Field<byte>("SheetHeaderOrder"),
+                FRConstantValue = row.Field<double?>("FRConstantValue"),
+                HeaderSummery = string.IsNullOrWhiteSpace(row.Field<string?>("HeaderSummery")) ? null : XDocument.Parse(row.Field<string>("HeaderSummery")),
+        };
         }
     }
 }

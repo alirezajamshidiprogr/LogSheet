@@ -1,0 +1,21 @@
+﻿@model List<DetailViewModel>
+
+<table class="table table-bordered ms-5">
+    <thead>
+        <tr>
+            <th>شرح</th>
+            <th>ترتیب</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+                <tr>
+                    <td>@detail.Description</td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm order-input" value="@detail.Order" data-id="@detail.Id" data-level="detail" />
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

@@ -1,75 +1,107 @@
 ﻿let countChange = 0;
-
+// سه آرایه‌ی Global برای نگهداری مقادیر
+const shiftValues = {
+    M: [],
+    A: [],
+    E: []  // یا N، مطابق HTML
+};
 
 
 // کلیک روی sheets
-document.querySelectorAll('.sheet-item').forEach(item => {
-    item.addEventListener('click', async function () {
-        checkAnyInputChanged();
-        const value = document.getElementById('logSheetDate').value.trim();
-        const sheetName = this.dataset.sheet;
-        const safeId = sheetName.replace(/[^a-zA-Z0-9]/g, '_');
+document.addEventListener('DOMContentLoaded', async function () {
+    const sheets = document.querySelectorAll('.sheet-data'); // تمام div های sheet
+    const logSheetDate = document.getElementById('logSheetDate').value.trim();
 
-        if (!isValidDate(value)) {
-            await Swal.fire({
-                icon: 'warning',
-                title: 'تاريخ را جهت ثبت مقادير لاگ شيبت مشخص كنيد.',
-                showConfirmButton: true,
-                confirmButtonText: 'باشه',
-                timer: 4000,
-                timerProgressBar: true
-            });
-            return;
-        }
+    if (!isValidDate(logSheetDate)) {
+        await Swal.fire({
+            icon: 'warning',
+            title: 'تاريخ را جهت ثبت مقادير لاگ شيبت مشخص كنيد.',
+            showConfirmButton: true,
+            confirmButtonText: 'باشه',
+            timer: 4000,
+            timerProgressBar: true
+        });
+        return;
+    }
 
-        // مدیریت استایل فعال/غیرفعال
-        document.querySelectorAll('.sheet-item').forEach(li => li.classList.remove('active-sheet'));
-        this.classList.add('active-sheet');
+    sheets.forEach(async div => {
+        const sheetName = div.id.replace(/^sheet-/, ''); // safeId
+        const originalSheetName = div.dataset.sheet || sheetName; // اگر نیاز به نام واقعی داری
 
-        // Fetch داده‌های جدید و رفرش div
         try {
-            saveLogSheetData();
-
-            const response = await fetch(`/Home/GetSheetData?sheetName=${encodeURIComponent(sheetName)}&getDate=${encodeURIComponent(value)}`);
+            const response = await fetch(`/Home/GetSheetData?sheetName=${encodeURIComponent(originalSheetName)}&getDate=${encodeURIComponent(logSheetDate)}`);
             if (!response.ok) throw new Error('خطا در پاسخ سرور');
 
             const html = await response.text();
-
-            // فقط اگر کاربر "بله" زد، div رفرش شود
-            DisplaySheetData(html, safeId);
-
-        } catch (error) {
-            await Swal.fire('خطا', 'خطا در بارگذاری داده‌های Sheet', 'error');
-            console.error('Fetch error:', error);
+            div.innerHTML = html;
+            div.dataset.active = "true"; // می‌توانی این flag را بگذاری
+        } catch (err) {
+            console.error(`Error loading sheet ${originalSheetName}:`, err);
         }
     });
 });
 
-function DisplaySheetData(html, safeId) {
-    $('#sheet-' + safeId).html(html).show();
-    var $container = $('#sheet-' + safeId);
-    $('#sheet-' + safeId).attr('data-active', 'true');
-    $container.html(html).show();
-    enableArrowNavigation($container[0]);
-    $container.find('.form-control').each(function () {
-        $(this).on('blur', function () {
-            SetInputValuesLogsheet(this);
-            // بررسي اعتبار مقدار input
-            callValidationInputs(this);
-        });
-    });
-}
+//function DisplaySheetData(html, safeId) {
+//    alert('sdg')
+//    const $container = $('#sheet-' + safeId);
+//    $container.html(html).show();        // اول innerHTML را قرار بده
+//    $container.attr('data-active', 'true');
 
+
+//    // اضافه کردن event های blur
+//    $container.find('.form-control').each(function () {
+//        $(this).on('blur', function () {
+//            SetInputValuesLogsheet(this);
+//            callValidationInputs(this);
+//        });
+//    });
+//}
 
 // نمایش Sheet انتخاب شده
 document.querySelectorAll('.sheet-item').forEach(item => {
-    item.addEventListener('click', function () {
-        let sheetKey = this.dataset.sheet;
+    item.addEventListener('click', async function () {
+
+        // اضافه کردن active-sheet
+        document.querySelectorAll('.sheet-item').forEach(i => i.classList.remove('active-sheet'));
+        this.classList.add('active-sheet');
+
+        const sheetKey = this.id;
         document.querySelectorAll('.sheet-data').forEach(div => div.style.display = 'none');
-        let target = document.getElementById('sheet-' + sheetKey);
-        if (target) target.style.display = 'block';
+
+        const target = document.getElementById(sheetKey.replace("sheet-", "sheetRow-"));
+        if (target) {
+            target.style.display = 'block';
+
+            if (!target.dataset.active || target.dataset.active !== 'true') {
+                const logSheetDate = document.getElementById('logSheetDate').value.trim();
+                const originalSheetName = target.dataset.sheet || sheetKey;
+
+                try {
+                    const response = await fetch(`/Home/GetSheetData?sheetName=${encodeURIComponent(originalSheetName)}&getDate=${encodeURIComponent(logSheetDate)}`);
+                    if (!response.ok) throw new Error('خطا در پاسخ سرور');
+
+                    const html = await response.text();
+                    DisplaySheetData(html, sheetKey); // داخل DisplaySheetData، Arrow navigation فعال می‌شود
+                } catch (err) {
+                    console.error(`Error loading sheet ${originalSheetName}:`, err);
+                }
+            } else {
+                // اگر قبلاً لود شده، فقط Arrow navigation را فعال کن
+                enableArrowNavigation(target);
+
+
+                // بررسي مقادير سلول ها و محاسبه سلولهاي فرمولي 
+                target.querySelectorAll('.form-control').forEach(input => {
+                    input.addEventListener('blur', function () {
+                        SetInputValuesLogsheet(this);
+                        callValidationInputs(this);
+                    });
+                });
+            }
+        }
     });
 });
+
 
 // دکمه نوسازی
 document.getElementById('resetBtn').addEventListener('click', function () {
@@ -156,7 +188,11 @@ function enableArrowNavigation(container) {
     const activeInputs = Array.from(sheet.querySelectorAll('input[type="text"]:not([disabled])'));
 
     activeInputs.forEach(input => {
+        debugger
+
         input.addEventListener('keydown', function (e) {
+            debugger
+
             const row = input.closest('.row');
             if (!row) return;
 
@@ -460,6 +496,7 @@ function showTooltip(target, text) {
     }, { once: true });
 }
 // رویداد focus برای نمایش tooltip
+
 function DisplayToolTipDate(ev) {
     const target = ev && ev.target;
 
@@ -513,8 +550,6 @@ function collectNightShiftInputs() {
     return result;
 }
 
-
-
 function checkAnyInputChanged() {
     countChange = 0; // ریست قبل از بررسی
     const inputs = document.querySelectorAll('input.inputToSave');
@@ -525,7 +560,6 @@ function checkAnyInputChanged() {
         }
     }
 }
-
 
 function isValidDate(value) {
     // regex برای yyyy/mm/dd
@@ -548,33 +582,96 @@ function isValidDate(value) {
     return true;
 }
 
+const btnReport = document.getElementById('btnGenerateReport');
 
-document.getElementById('btnGenerateReport').addEventListener('click', async () => {
-    const sheetName = document.getElementById('sheetName').value.trim();
-    const logSheetHeaderName = document.getElementById('headerName').value.trim();
-    const description = document.getElementById('description').value.trim();
+if (btnReport) {
+    btnReport.addEventListener('click', async () => {
+        const sheetName = document.getElementById('sheetName')?.value.trim() ?? "";
+        const logSheetHeaderName = document.getElementById('headerName')?.value.trim() ?? "";
+        const description = document.getElementById('description')?.value.trim() ?? "";
 
-    const url = `/Home/LogSheetReport?sheetName=${encodeURIComponent(sheetName)}&logSheetHeaderName=${encodeURIComponent(logSheetHeaderName)}&description=${encodeURIComponent(description)}`;
+        const url = `/Home/LogSheetReport?sheetName=${encodeURIComponent(sheetName)}&logSheetHeaderName=${encodeURIComponent(logSheetHeaderName)}&description=${encodeURIComponent(description)}`;
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
 
-        const reportList = document.getElementById('reportList');
-        reportList.innerHTML = '';
+            const reportList = document.getElementById('reportList');
+            reportList.innerHTML = '';
 
-        if (data.length === 0) {
-            reportList.innerHTML = '<li class="list-group-item">هیچ رکوردی یافت نشد.</li>';
-        } else {
-            data.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'list-group-item';
-                li.textContent = item.Description; // فرض بر اینه که data لیستی از MeasurementPoint است
-                reportList.appendChild(li);
-            });
+            if (data.length === 0) {
+                reportList.innerHTML = '<li class="list-group-item">هیچ رکوردی یافت نشد.</li>';
+            } else {
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    li.textContent = item.Description;
+                    reportList.appendChild(li);
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            alert('خطا در بارگذاری گزارش');
         }
-    } catch (err) {
-        console.error(err);
-        alert('خطا در بارگذاری گزارش');
-    }
-});
+    });
+} else {
+    console.warn("⚠ دکمه btnGenerateReport در صفحه پیدا نشد.");
+}
+
+// سامري هر گروه 
+function handleInputChanged(ev) {
+    const target = ev.target;
+
+    if (!target.classList.contains("inputToSave")) return;
+
+    // پیدا کردن card-body والد
+    const cardBody = target.closest(".card-body");
+    if (!cardBody) return;
+
+    // همه inputهای inputToSave داخل همین card-body
+    const inputs = cardBody.querySelectorAll("input.inputToSave");
+
+    // پاکسازی داده‌های شیفت‌ها قبل از جمع‌آوری دوباره
+    shiftValues.M = [];
+    shiftValues.A = [];
+    shiftValues.E = [];
+
+    inputs.forEach(inp => {
+        const shift = inp.dataset.shift;
+        if (!shift || !["M", "A", "E"].includes(shift)) return;
+
+        // جمع‌آوری داده‌ها به صورت آبجکت
+        const dataObj = {
+            value: inp.value,
+            measuringPointId: inp.dataset.measuringpointid,
+            functionAllocation: inp.dataset.functionallocation,
+            upperRange: inp.dataset.upperrange,
+            lowerRange: inp.dataset.lowerrange,
+            hasChanged: inp.dataset.haschanged
+        };
+
+        shiftValues[shift].push(dataObj);
+    });
+
+    console.log("Shift data:", shiftValues);
+}
+
+// این تابع جایگزین updateShiftArrays قبلی می‌شود
+function updateShiftArrays() {
+    shiftValues.M = collectShiftValues("M");
+    shiftValues.A = collectShiftValues("A");
+    shiftValues.N = collectShiftValues("E"); // در HTML تو Night با "E" هست
+}
+
+// این تابع جایگزین collectShiftValues قبلی می‌شود
+function collectShiftValues(shiftType) {
+    return Array.from(document.querySelectorAll(`.inputToSave[data-shift="${shiftType}"]`))
+        .map(inp => ({
+            value: inp.value,
+            measuringPointId: inp.dataset.measuringpointid,
+            functionAllocation: inp.dataset.functionallocation,
+            upperRange: inp.dataset.upperrange,
+            lowerRange: inp.dataset.lowerrange,
+            hasChanged: inp.dataset.haschanged
+        }));
+}

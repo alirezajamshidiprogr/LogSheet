@@ -1,0 +1,56 @@
+﻿@*
+
+@model List<GroupViewModel>
+
+<table class="table table-bordered ms-3">
+    <thead>
+        <tr>
+            <th>نام گروه</th>
+            <th>ترتیب</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in Model)
+        {
+            <tr class="group-row" data-group-id="@group.Id">
+                <td>@group.Name</td>
+                <td>
+                    <input type="number" class="form-control form-control-sm order-input" value="@group.Order" data-id="@group.Id" data-level="group" />
+                </td>
+            </tr>
+
+            <!-- سطح 3: شرح ها -->
+            <tr class="group-detail-container" id="group-details-@group.Id" style="display:none;">
+                <td colspan="2">
+                    <div class="detail-container" id="detail-container-@group.Id">
+                        <!-- Partial view شرح ها اینجا لود می شود -->
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // کلیک روی گروه برای رفرش شرح ها
+    document.querySelectorAll('.group-row').forEach(row => {
+        row.addEventListener('click', async function () {
+            const groupId = this.dataset.groupId;
+            const container = document.getElementById('detail-container-' + groupId);
+
+            if (container.innerHTML.trim() === "") {
+                try {
+                    const response = await fetch(`/Home/GetGroupDetails?groupId=${groupId}`);
+                    const html = await response.text();
+                    container.innerHTML = html;
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            const detailRow = document.getElementById('group-details-' + groupId);
+            detailRow.style.display = detailRow.style.display === 'none' ? 'table-row' : 'none';
+        });
+    });
+</script>
+*@

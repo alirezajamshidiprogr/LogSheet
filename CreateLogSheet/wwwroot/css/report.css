@@ -1,0 +1,724 @@
+﻿/* ===== فونت صنعتی ===== */
+@font-face {
+    font-family: 'Vazir';
+    src: url('/fonts/vazir.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'vazir-light';
+    src: url('../fonts/vazir-light.ttf') format('truetype');
+}
+/* ========== فونت و تنظیمات پایه ========== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+* {
+    font-family: 'vazir-light', 'Vazir', system-ui, sans-serif;
+    direction: rtl;
+}
+
+/* ========== هدر صفحه ========== */
+.container-fluid > h3 {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-right: 4px solid #3b82f6;
+}
+
+    .container-fluid > h3 i {
+        margin-left: 8px;
+    }
+
+/* ========== کارت فیلترها ========== */
+.row.g-3 {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1rem;
+}
+
+    .row.g-3 .col-md-4 {
+        margin-bottom: 0.5rem;
+    }
+
+    /* ========== استایل لیبل‌ها ========== */
+    .row.g-3 label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .row.g-3 label::before {
+            content: "▸";
+            color: #3b82f6;
+            font-size: 0.8rem;
+        }
+
+/* ========== استایل Select2 ========== */
+.select2-container--default .select2-selection--multiple {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 45px;
+    padding: 6px 10px;
+    transition: all 0.2s ease;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background-color: white;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 4px 12px 4px 8px;
+    margin: 4px 6px 4px 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        transform: scale(1.02);
+    }
+
+.select2-container--default .select2-selection__choice__remove {
+    color: white;
+    margin-left: 8px;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    opacity: 0.8;
+}
+
+    .select2-container--default .select2-selection__choice__remove:hover {
+        color: #fbbf24;
+        opacity: 1;
+    }
+
+.select2-container--default .select2-search--inline .select2-search__field {
+    font-size: 0.85rem;
+    color: #1e293b;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+/* ========== دکمه ایجاد گزارش ========== */
+.btn-add-unit {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    border-radius: 14px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    margin-top: 1rem;
+}
+
+    .btn-add-unit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+        background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .btn-add-unit i {
+        margin-left: 8px;
+    }
+
+/* ========== جدول گزارش ========== */
+.table-responsive {
+    background: white;
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+
+        .table thead th {
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 1rem 0.8rem;
+            border: none;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+            .table thead th:first-child {
+                border-radius: 16px 0 0 0;
+            }
+
+            .table thead th:last-child {
+                border-radius: 0 16px 0 0;
+            }
+
+    .table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, #f8fafc, #eff6ff);
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+    .table tbody td {
+        padding: 0.9rem 0.8rem;
+        vertical-align: middle;
+        color: #334155;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+        .table tbody td:first-child {
+            font-weight: 600;
+            color: #3b82f6;
+            background: #f8fafc;
+        }
+
+    /* ========== حالت خالی جدول ========== */
+    .table tbody tr.no-data td {
+        text-align: center;
+        color: #94a3b8;
+        padding: 3rem;
+        font-style: italic;
+    }
+
+/* ========== اسکرول بار سفارشی برای جدول ========== */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+    }
+
+/* ========== بج (Badge) برای وضعیت‌ها ========== */
+.badge-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+    .badge-status.active {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .badge-status.inactive {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+/* ========== ریسپانسیو ========== */
+@media (max-width: 768px) {
+    .row.g-3 {
+        padding: 1rem;
+    }
+
+    .table thead th {
+        font-size: 0.7rem;
+        padding: 0.8rem 0.5rem;
+    }
+
+    .table tbody td {
+        font-size: 0.7rem;
+        padding: 0.6rem 0.5rem;
+    }
+
+    .btn-add-unit {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        width: 100%;
+    }
+
+    .container-fluid > h3 {
+        font-size: 1.3rem;
+        padding: 0.8rem 1rem;
+    }
+}
+
+/* ========== لودینگ اسپینر ========== */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== استایل خروجی (Toast/Alert) ========== */
+.toast-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== استایل فیلترهای فعال ========== */
+.filter-active {
+    background: #eff6ff;
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+}
+
+    .filter-active span {
+        background: #3b82f6;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        margin: 0 4px;
+        display: inline-block;
+    }
+
+/* ========== استایل شمارنده نتایج ========== */
+.result-count {
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .result-count .number {
+        background: #3b82f6;
+        color: white;
+        padding: 2px 10px;
+        border-radius: 30px;
+        font-weight: 700;
+    }
+
+/* ========== استایل دکمه پاک کردن فیلترها ========== */
+.btn-clear-filters {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    color: #64748b;
+    transition: all 0.2s ease;
+}
+
+    .btn-clear-filters:hover {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+/* ========== استایل مدرن جدول گزارش ========== */
+.report-table-wrapper {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+    .table-title i {
+        font-size: 1.2rem;
+        color: #3b82f6;
+    }
+
+.btn-delete-selected {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border: none;
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #dc2626;
+    transition: all 0.2s ease;
+}
+
+    .btn-delete-selected:hover {
+        background: linear-gradient(135deg, #fecaca, #fca5a5);
+        transform: translateY(-1px);
+    }
+
+.table-responsive-custom {
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .report-table thead tr {
+        background: #f1f5f9;
+    }
+
+    .report-table thead th {
+        padding: 14px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+        border-bottom: 2px solid #e2e8f0;
+        white-space: nowrap;
+        font-family: 'vazir-light', 'Vazir', system-ui, sans-serif !important;
+        font-size: 16px !important;
+    }
+
+        .report-table thead th.checkbox-col {
+            width: 40px;
+        }
+
+        .report-table thead th.action-col {
+            width: 70px;
+        }
+
+    .report-table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .report-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .report-table tbody tr.row-deleting {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+.report-table tbody td {
+    padding: 12px 12px;
+    font-size: 0.8rem;
+    color: #334155;
+    text-align: center;
+    vertical-align: middle;
+}
+
+    .report-table tbody td.number-cell {
+        font-weight: 600;
+        color: #3b82f6;
+    }
+
+    .report-table tbody td.id-cell {
+        font-size: 0.75rem;
+        color: #64748b;
+    }
+
+    .report-table tbody td.desc-cell {
+        text-align: right;
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .report-table tbody td.action-cell {
+        text-align: center;
+    }
+
+.delete-row {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+    .delete-row:hover {
+        background: #fee2e2;
+        transform: scale(1.1);
+    }
+
+    .delete-row i {
+        font-size: 1rem;
+    }
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.row-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+#selectAllCheckbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.empty-row td {
+    padding: 60px 20px !important;
+}
+
+.empty-state {
+    text-align: center;
+    color: #94a3b8;
+}
+
+    .empty-state i {
+        font-size: 3rem;
+        opacity: 0.5;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .empty-state p {
+        font-size: 0.9rem;
+    }
+
+/* اسکرول بار */
+.table-responsive-custom::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive-custom::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.table-responsive-custom::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .report-table thead th, .report-table tbody td {
+        padding: 8px 8px;
+        font-size: 0.7rem;
+    }
+
+    .delete-row {
+        padding: 4px 8px;
+    }
+
+    .table-header {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+
+.modal {
+    direction: rtl;
+}
+/* ========== استایل Modal افزودن واحد ========== */
+.modal-content {
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    border-bottom: none;
+    padding: 1.2rem 1.5rem;
+}
+
+    .modal-header .modal-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+        .modal-header .modal-title i {
+            margin-left: 8px;
+        }
+
+    .modal-header .btn-close {
+        background-color: white;
+        border-radius: 50%;
+        opacity: 1;
+        padding: 8px;
+        margin: -8px -8px -8px 0;
+    }
+
+        .modal-header .btn-close:hover {
+            background-color: #e2e8f0;
+            transform: rotate(90deg);
+            transition: all 0.2s ease;
+        }
+
+.modal-body {
+    padding: 1.8rem;
+    background: #f8fafc;
+}
+
+    .modal-body .form-label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .modal-body .form-label i {
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+
+    .modal-body .form-control,
+    .modal-body .form-select {
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        padding: 10px 14px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+    }
+
+        .modal-body .form-control:focus,
+        .modal-body .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .modal-body .form-control.is-invalid,
+        .modal-body .form-select.is-invalid {
+            border-color: #ef4444;
+        }
+
+    .modal-body .invalid-feedback {
+        font-size: 0.75rem;
+        margin-top: 5px;
+    }
+
+    .modal-body .alert {
+        border-radius: 12px;
+        font-size: 0.85rem;
+        background: #eff6ff;
+        border-color: #bfdbfe;
+        color: #1e40af;
+    }
+
+.modal-footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 1.5rem;
+    background: white;
+}
+
+    .modal-footer .btn {
+        border-radius: 30px;
+        padding: 8px 24px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .modal-footer .btn-secondary {
+        background: #f1f5f9;
+        border: none;
+        color: #475569;
+    }
+
+        .modal-footer .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+    .modal-footer .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border: none;
+    }
+
+        .modal-footer .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+/* انیمیشن Modal */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: transform 0.2s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}

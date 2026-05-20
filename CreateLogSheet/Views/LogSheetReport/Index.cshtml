@@ -1,10 +1,24 @@
 ﻿@model List<Model>
 
+<style>
+    .navbar {
+        display: none;
+    }
+
+    .footer{
+    display:none ;
+    }
+    </style>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+<link href="~/css/report.css" rel="stylesheet" />
+
 <div class="container-fluid">
     <h3 class="mb-4">📊 گزارش لاگ شیت</h3>
 
     <div class="row g-3">
-
         <div class="col-md-4">
             <label>واحد عملیاتی (Operational Unit)</label>
             <select id="operationalUnitSelect" class="form-control" multiple="multiple">
@@ -14,7 +28,6 @@
                 }
             </select>
         </div>
-
 
         <div class="col-md-4">
             <label>شیت</label>
@@ -76,40 +89,170 @@
             </select>
         </div>
 
-        <!-- 🟢 فیلد جدید: واحد عملیاتی -->
-        
-
+        <div class="col-md-4">
+            <button class="btn btn-light btn-add-unit" id="createReportBtn">
+                <i class="bi bi-eye"></i> ایجاد گزارش
+            </button>
+        </div>
     </div>
 
-    <div class="table-responsive mt-4">
-        <table class="table table-striped table-hover text-center align-middle" id="reportTable">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>ID</th>
-                    <th>Sheet Name</th>
-                    <th>Log Sheet Header Name</th>
-                    <th>Description</th>
-                    <th>Measuring Position</th>
-                    <th>Characteristic</th>
-                    <th>Unit of Measure</th>
-                    <th>Operational Unit</th> <!-- ستون جدید -->
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <div class="col-12">
-            <button class="btn btn-light btn-add-unit">
-                <i class="bi bi-eye"></i> ايجاد گزارش
-            </button>
+    <!-- جدول جدید با استایل مدرن -->
+    <div class="report-table-wrapper mt-4">
+        <div class="table-header">
+            <div class="table-title">
+                <i class="bi bi-table"></i>
+                <span>لیست داده‌های گزارش</span>
+            </div>
+            <div class="table-actions">
+                <button class="btn-delete-selected" id="deleteSelectedBtn" style="display: none;">
+                    <i class="bi bi-trash3"></i> حذف انتخاب شده‌ها
+                </button>
+            </div>
+        </div>
+        
+        <div class="table-responsive-custom">
+            <table class="report-table" id="reportTable">
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">
+                            <input type="checkbox" id="selectAllCheckbox">
+                        </th>
+                        <th>#</th>
+                        <th>شناسه</th>
+                        <th>شیت</th>
+                        <th>گروه</th>
+                        <th>شرح</th>
+                        <th>موقعیت اندازه‌گیری</th>
+                        <th>ویژگی</th>
+                        <th>واحد</th>
+                        <th>واحد عملیاتی</th>
+                        <th class="action-col">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- داده‌ها动态加载 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ========== Modal ایجاد گزارش ========== -->
+<div class="modal fade" id="createReportModal" tabindex="-1" aria-labelledby="createReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportModalLabel">
+                    <i class="bi bi-file-earmark-spreadsheet"></i> ایجاد گزارش جدید
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createReportForm">
+                    <div class="mb-3">
+                        <label for="reportName" class="form-label">
+                            <i class="bi bi-tag"></i> نام گزارش <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="reportName" name="reportName"
+                               placeholder="مثال: گزارش عملکرد دی 1403" required>
+                        <div class="invalid-feedback">لطفاً نام گزارش را وارد کنید</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reportOperationalUnit" class="form-label">
+                            <i class="bi bi-building"></i> واحد عملیاتی <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="reportOperationalUnit" name="reportOperationalUnit" required>
+                            <option value="">انتخاب کنید...</option>
+                            @foreach (var ou in Model.Select(x => x.OperationalUnit).Distinct())
+                            {
+                                <option value="@ou">@ou</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">لطفاً واحد عملیاتی را انتخاب کنید</div>
+                        <small class="text-muted">گزارش برای کدام واحد عملیاتی تهیه می‌شود؟</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-lock"></i> نوع دسترسی
+                        </label>
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="accessType" id="publicAccess" value="public" checked>
+                                <label class="form-check-label" for="publicAccess">
+                                    <i class="bi bi-globe2"></i> عمومی
+                                    <small class="text-muted d-block">قابل مشاهده برای همه کاربران</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="accessType" id="privateAccess" value="private">
+                                <label class="form-check-label" for="privateAccess">
+                                    <i class="bi bi-person-lock"></i> خصوصی
+                                    <small class="text-muted d-block">فقط قابل مشاهده برای شما</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-calendar-range"></i> محدوده زمانی
+                        </label>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label for="startDate" class="form-label small">تاریخ شروع</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endDate" class="form-label small">تاریخ پایان</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate">
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label small">انتخاب سریع بازه زمانی:</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-primary date-preset" data-preset="today">
+                                    <i class="bi bi-calendar-day"></i> امروز
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary date-preset" data-preset="thisWeek">
+                                    <i class="bi bi-calendar-week"></i> این هفته
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary date-preset" data-preset="thisMonth">
+                                    <i class="bi bi-calendar-month"></i> این ماه
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary date-preset" data-preset="thisYear">
+                                    <i class="bi bi-calendar-year"></i> امسال
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-light border" id="activeFiltersSummary">
+                        <i class="bi bi-funnel"></i> <strong>فیلترهای اعمال شده:</strong>
+                        <div id="filtersList" class="mt-2">
+                            <span class="text-muted">هنوز فیلتری انتخاب نشده است</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> انصراف
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmCreateReportBtn">
+                    <i class="bi bi-check-circle"></i> ایجاد و دانلود گزارش
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function () {
@@ -120,9 +263,11 @@
             const $characteristic = $('#characteristicSelect');
             const $unit = $('#unitSelect');
             const $operationalUnit = $('#operationalUnitSelect');
-            const $tableBody = $('#reportTable tbody');
+            const $tableBody = $('#reportTableBody');
 
-            // فعال‌سازی select2 برای همه
+            let currentFilters = {};
+
+            // فعال‌سازی select2
             $sheet.add($header).add($desc)
                 .add($measuring).add($characteristic).add($unit).add($operationalUnit)
                 .select2({
@@ -130,12 +275,10 @@
                     width: '100%',
                     allowClear: true,
                     closeOnSelect: false,
-                    language: {
-                        noResults: () => "موردی یافت نشد"
-                    }
+                    language: { noResults: () => "موردی یافت نشد" }
                 });
 
-            // تابع بارگذاری گزارش
+            // بارگذاری گزارش
             async function loadReport() {
                 const sheetNames = $sheet.val() || [];
                 const headerNames = $header.val() || [];
@@ -144,6 +287,12 @@
                 const characteristics = $characteristic.val() || [];
                 const units = $unit.val() || [];
                 const operationalUnits = $operationalUnit.val() || [];
+
+                currentFilters = {
+                    sheetNames, headerNames, descriptions,
+                    measuringPositions, characteristics, units, operationalUnits
+                };
+                updateFiltersSummary();
 
                 try {
                     const response = await fetch(`/LogSheetReport/LogSheetReport`, {
@@ -156,43 +305,268 @@
                             measuringPositions: measuringPositions,
                             characteristics: characteristics,
                             unitOfMeasures: units,
-                            operationalUnits: operationalUnits // 🟢 فیلتر جدید
+                            operationalUnits: operationalUnits
                         })
                     });
 
                     const data = await response.json();
-                    $tableBody.empty();
-
-                    if (!data.length) {
-                        $tableBody.append(`<tr><td colspan="9" class="text-danger">هیچ رکوردی یافت نشد.</td></tr>`);
-                        return;
-                    }
-
-                    data.forEach((r, i) => {
-                        $tableBody.append(`
-                                    <tr>
-                                        <td>${i + 1}</td>
-                                        <td>${r.id}</td>
-                                        <td>${r.sheetName || ''}</td>
-                                        <td>${r.logSheetHeaderName || ''}</td>
-                                        <td>${r.description || ''}</td>
-                                        <td>${r.measuringPosition || ''}</td>
-                                        <td>${r.characteristic || ''}</td>
-                                        <td>${r.unitOfMeasure || ''}</td>
-                                        <td>${r.operationalUnit || ''}</td>
-                                    </tr>
-                                `);
-                    });
+                    renderTable(data);
                 } catch (err) {
                     console.error(err);
-                    alert('خطا در بارگذاری گزارش');
+                    Swal.fire('خطا', 'خطا در بارگذاری گزارش', 'error');
                 }
             }
 
-            // هر بار فیلترها تغییر کنند، گزارش دوباره لود شود
-            $sheet.add($header).add($desc)
-                .add($measuring).add($characteristic).add($unit).add($operationalUnit)
-                .on('change', loadReport);
+            // رندر جدول
+            function renderTable(data) {
+                $tableBody.empty();
+                
+                if (!data.length) {
+                    $tableBody.html(`<tr class="empty-row"><td colspan="11"><div class="empty-state"><i class="bi bi-inbox"></i><p>هیچ داده‌ای یافت نشد</p></div></td></tr>`);
+                    $('#deleteSelectedBtn').hide();
+                    return;
+                }
+
+                data.forEach((r, i) => {
+                    const row = `
+                        <tr data-id="${r.id}" data-name="${r.description || ''}">
+                            <td class="checkbox-cell"><input type="checkbox" class="row-checkbox" data-id="${r.id}"></td>
+                            <td class="number-cell">${i + 1}</td>
+                            <td class="id-cell">${r.id || ''}</td>
+                            <td class="sheet-cell">${r.sheetName || ''}</td>
+                            <td class="header-cell">${r.logSheetHeaderName || ''}</td>
+                            <td class="desc-cell">${r.description || ''}</td>
+                            <td class="position-cell">${r.measuringPosition || ''}</td>
+                            <td class="char-cell">${r.characteristic || ''}</td>
+                            <td class="unit-cell">${r.unitOfMeasure || ''}</td>
+                            <td class="ou-cell">${r.operationalUnit || ''}</td>
+                            <td class="action-cell">
+                                <button class="delete-row" data-id="${r.id}" data-name="${r.description || ''}">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    $tableBody.append(row);
+                });
+                
+                attachTableEvents();
+            }
+            
+            // اتصال رویدادهای جدول
+            function attachTableEvents() {
+                // حذف یک رکورد
+                $('.delete-row').off('click').on('click', function() {
+                    const $btn = $(this);
+                    const rowId = $btn.data('id');
+                    const rowName = $btn.data('name');
+                    
+                    Swal.fire({
+                        title: 'حذف رکورد',
+                        text: `آیا از حذف "${rowName || 'این رکورد'}" اطمینان دارید؟`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'بله، حذف شود',
+                        cancelButtonText: 'انصراف'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const $row = $btn.closest('tr');
+                            $row.addClass('row-deleting');
+                            
+                            setTimeout(() => {
+                                $row.remove();
+                                if ($('#reportTableBody tr:not(.empty-row)').length === 0) {
+                                    renderTable([]);
+                                }
+                                Swal.fire('حذف شد!', 'رکورد با موفقیت حذف شد.', 'success');
+                            }, 200);
+                        }
+                    });
+                });
+                
+                // انتخاب همه
+                $('#selectAllCheckbox').off('change').on('change', function() {
+                    const isChecked = $(this).is(':checked');
+                    $('.row-checkbox').prop('checked', isChecked);
+                    toggleDeleteSelectedBtn();
+                });
+                
+                // چک باکس‌های تکی
+                $('.row-checkbox').off('change').on('change', function() {
+                    toggleDeleteSelectedBtn();
+                });
+            }
+            
+            // نمایش/مخفی کردن دکمه حذف گروهی
+            function toggleDeleteSelectedBtn() {
+                const checkedCount = $('.row-checkbox:checked').length;
+                if (checkedCount > 0) {
+                    $('#deleteSelectedBtn').show().html(`<i class="bi bi-trash3"></i> حذف ${checkedCount} انتخاب شده`);
+                } else {
+                    $('#deleteSelectedBtn').hide();
+                }
+            }
+            
+            // حذف گروهی
+            $('#deleteSelectedBtn').off('click').on('click', function() {
+                const selectedIds = [];
+                $('.row-checkbox:checked').each(function() {
+                    const $row = $(this).closest('tr');
+                    selectedIds.push({
+                        id: $row.data('id'),
+                        name: $row.data('name')
+                    });
+                });
+                
+                if (selectedIds.length === 0) return;
+                
+                Swal.fire({
+                    title: 'حذف گروهی',
+                    text: `آیا از حذف ${selectedIds.length} رکورد اطمینان دارید؟`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'بله، همه حذف شود',
+                    cancelButtonText: 'انصراف'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('.row-checkbox:checked').each(function() {
+                            $(this).closest('tr').addClass('row-deleting');
+                        });
+                        
+                        setTimeout(() => {
+                            $('.row-checkbox:checked').each(function() {
+                                $(this).closest('tr').remove();
+                            });
+                            $('#selectAllCheckbox').prop('checked', false);
+                            toggleDeleteSelectedBtn();
+                            
+                            if ($('#reportTableBody tr:not(.empty-row)').length === 0) {
+                                renderTable([]);
+                            }
+                            Swal.fire('حذف شد!', `${selectedIds.length} رکورد با موفقیت حذف شد.`, 'success');
+                        }, 200);
+                    }
+                });
+            });
+            
+            function updateFiltersSummary() {
+                let filtersHtml = '';
+                let hasFilter = false;
+                
+                if (currentFilters.sheetNames?.length) { hasFilter = true; filtersHtml += `<div><strong>شیت:</strong> ${currentFilters.sheetNames.join(', ')}</div>`; }
+                if (currentFilters.headerNames?.length) { hasFilter = true; filtersHtml += `<div><strong>گروه:</strong> ${currentFilters.headerNames.join(', ')}</div>`; }
+                if (currentFilters.descriptions?.length) { hasFilter = true; filtersHtml += `<div><strong>شرح:</strong> ${currentFilters.descriptions.join(', ')}</div>`; }
+                if (currentFilters.measuringPositions?.length) { hasFilter = true; filtersHtml += `<div><strong>موقعیت:</strong> ${currentFilters.measuringPositions.join(', ')}</div>`; }
+                if (currentFilters.characteristics?.length) { hasFilter = true; filtersHtml += `<div><strong>ویژگی:</strong> ${currentFilters.characteristics.join(', ')}</div>`; }
+                if (currentFilters.units?.length) { hasFilter = true; filtersHtml += `<div><strong>واحد:</strong> ${currentFilters.units.join(', ')}</div>`; }
+                if (currentFilters.operationalUnits?.length) { hasFilter = true; filtersHtml += `<div><strong>واحد عملیاتی:</strong> ${currentFilters.operationalUnits.join(', ')}</div>`; }
+                
+                $('#filtersList').html(hasFilter ? filtersHtml : '<span class="text-muted">هیچ فیلتری انتخاب نشده است</span>');
+            }
+            
+            // ========== توابع تاریخ ==========
+            function getDateRange(preset) {
+                const today = new Date();
+                let startDate = new Date(), endDate = new Date();
+                switch(preset) {
+                    case 'today': startDate = endDate = today; break;
+                    case 'thisWeek':
+                        const dayOfWeek = today.getDay();
+                        const saturday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+                        startDate.setDate(today.getDate() - saturday);
+                        endDate = new Date(startDate);
+                        endDate.setDate(startDate.getDate() + 6);
+                        break;
+                    case 'thisMonth':
+                        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                        break;
+                    case 'thisYear':
+                        startDate = new Date(today.getFullYear(), 0, 1);
+                        endDate = new Date(today.getFullYear(), 11, 31);
+                        break;
+                }
+                return { start: startDate.toISOString().split('T')[0], end: endDate.toISOString().split('T')[0] };
+            }
+            
+            function setDateRange(preset) {
+                const range = getDateRange(preset);
+                $('#startDate').val(range.start);
+                $('#endDate').val(range.end);
+            }
+            
+            setDateRange('today');
+            
+            $('.date-preset').click(function() {
+                const preset = $(this).data('preset');
+                setDateRange(preset);
+                $('.date-preset').removeClass('btn-primary').addClass('btn-outline-primary');
+                $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            });
+            
+            // ========== ایجاد گزارش ==========
+            $('#createReportBtn').click(function() {
+                const operationalUnits = $operationalUnit.val() || [];
+                const sheetNames = $sheet.val() || [];
+                
+                const today = new Date().toLocaleDateString('fa-IR');
+                let suggestedName = `گزارش_${today}`;
+                if (operationalUnits.length === 1) suggestedName = `گزارش_${operationalUnits[0]}_${today}`;
+                else if (sheetNames.length === 1) suggestedName = `گزارش_${sheetNames[0]}_${today}`;
+                
+                $('#reportName').val(suggestedName);
+                $('#reportOperationalUnit').val('');
+                $('#createReportModal').modal('show');
+            });
+            
+            function validateForm() {
+                let isValid = true;
+                if (!$('#reportName').val().trim()) { $('#reportName').addClass('is-invalid'); isValid = false; }
+                else { $('#reportName').removeClass('is-invalid'); }
+                
+                if (!$('#reportOperationalUnit').val()) { $('#reportOperationalUnit').addClass('is-invalid'); isValid = false; }
+                else { $('#reportOperationalUnit').removeClass('is-invalid'); }
+                
+                return isValid;
+            }
+            
+            $('#confirmCreateReportBtn').click(function() {
+                if (!validateForm()) return;
+                
+                const reportData = {
+                    reportName: $('#reportName').val().trim(),
+                    operationalUnit: $('#reportOperationalUnit').val(),
+                    accessType: $('input[name="accessType"]:checked').val(),
+                    startDate: $('#startDate').val(),
+                    endDate: $('#endDate').val(),
+                    filters: currentFilters,
+                    createdDate: new Date().toISOString()
+                };
+                
+                Swal.fire({ title: 'در حال ایجاد گزارش...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                
+                fetch('/LogSheetReport/SaveReport', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reportData)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        Swal.fire({ icon: 'success', title: 'موفق!', text: `گزارش "${reportData.reportName}" با موفقیت ایجاد شد` })
+                            .then(() => $('#createReportModal').modal('hide'));
+                    } else Swal.fire('خطا', result.message, 'error');
+                })
+                .catch(() => Swal.fire('خطا', 'خطا در ارتباط با سرور', 'error'));
+            });
+            
+            $('#reportName, #reportOperationalUnit').on('input change', function() { $(this).removeClass('is-invalid'); });
+            
+            $sheet.add($header).add($desc).add($measuring).add($characteristic).add($unit).add($operationalUnit).on('change', loadReport);
+            
+            loadReport();
         });
     </script>
 }
+

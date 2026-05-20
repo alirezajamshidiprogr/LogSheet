@@ -1,0 +1,64 @@
+﻿@model System.Data.DataTable
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <div class="units-grid">
+        @{
+            int index = 1;
+            foreach (System.Data.DataRow row in Model.Rows)
+            {
+                <div class="unit-card">
+                    <div class="card-header-custom">
+                        <div class="unit-badge">
+                            <i class="bi bi-cpu"></i>
+                            <span>@row["AreaName"]?.ToString()</span>
+                        </div>
+                        <div class="parent-badge">
+                            <i class="bi bi-share"></i>
+                            <span>والد: @row["ParentID"]?.ToString()</span>
+                        </div>
+                    </div>
+                    <div class="card-body-custom">
+                        <div class="unit-info">
+                            <div class="unit-number">#@index</div>
+                            <h3 class="unit-name">@row["UnitName"]?.ToString()</h3>
+                        </div>
+                        <div class="unit-actions">
+                            <button class="action-btn btn-primary-action"
+                            onclick="window.open('@Url.Action("Index", "Home")?unitId=@row["UnitId"]', '_blank')"
+                            title="ثبت لاگ شیت">
+                                <i class="bi bi-eye"></i>
+                                <span>ثبت لاگ</span>
+                            </button>
+                            <button class="action-btn btn-setting"
+                            onclick="window.open('@Url.Action("IndexLogSheetSetting", "LogSheetSetting", new { unitId = row["UnitId"] })', '_blank')"
+                            title="تنظیمات لاگ شیت">
+                                <i class="bi bi-sliders2"></i>
+                                <span>ايجاد لاگ</span>
+                            </button>
+                            <button class="action-btn btn-edit">
+                                <i class="bi bi-pencil-square"></i>
+                                <span>ویرایش</span>
+                            </button>
+
+                            <button type="submit" class="action-btn btn-delete">
+                                <i class="bi bi-trash"></i>
+                                <span>حذف</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>هیچ واحدی یافت نشد</h4>
+        <p>برای شروع، یک واحد جدید اضافه کنید</p>
+        <button class="btn-primary-gradient">افزودن واحد جدید</button>
+    </div>
+}

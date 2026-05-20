@@ -8,10 +8,202 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CreateLogSheet.styles.css" asp-append-version="true" />
 </head>
+<style>
+    /* ===== استایل نویگیشن بار شیک و مدرن ===== */
+
+/* استایل پایه نوار ناوبری */
+.navbar {
+    background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%) !important;
+    border-bottom: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.05) inset !important;
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 1rem !important;
+    transition: all 0.3s ease;
+}
+
+/* افکت اسکرول - وقتی صفحه پایین میاد */
+.navbar.scrolled {
+    padding: 0.5rem 1rem !important;
+    background: linear-gradient(135deg, rgba(26, 42, 58, 0.95) 0%, rgba(15, 26, 36, 0.95) 100%) !important;
+    backdrop-filter: blur(12px);
+}
+
+/* لوگو/برند */
+.navbar-brand {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #fff, #60a5fa, #3b82f6) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    letter-spacing: -0.5px !important;
+    position: relative !important;
+    padding: 0.5rem 0 !important;
+    transition: all 0.3s ease !important;
+}
+
+.navbar-brand::before {
+    content: '📊';
+    margin-left: 8px;
+    font-size: 1.3rem;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #60a5fa;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.02);
+    background: linear-gradient(135deg, #fff, #93c5fd, #60a5fa) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+}
+
+/* آیتم‌های منو */
+.navbar-nav .nav-item {
+    margin: 0 0.25rem;
+    position: relative;
+}
+
+.nav-link {
+    color: #e2e8f0 !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px !important;
+    transition: all 0.25s ease !important;
+    position: relative !important;
+}
+
+/* افکت hover روی لینک‌ها */
+.nav-link:hover {
+    color: #60a5fa !important;
+    background: rgba(96, 165, 250, 0.1) !important;
+    transform: translateY(-1px);
+}
+
+/* افکت خط زیر لینک active/هوور */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+    transition: all 0.3s ease;
+    transform: translateX(50%);
+    border-radius: 2px;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* لینک فعال (active) */
+.nav-link.active {
+    color: #60a5fa !important;
+    background: rgba(96, 165, 250, 0.15) !important;
+}
+
+.nav-link.active::after {
+    width: 80%;
+}
+
+/* دکمه همبرگر (برای موبایل) */
+.navbar-toggler {
+    border: 1px solid rgba(96, 165, 250, 0.3) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.navbar-toggler:hover {
+    background: rgba(96, 165, 250, 0.15) !important;
+    border-color: #60a5fa !important;
+    transform: rotate(90deg);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(96, 165, 250, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* کلاپس منو در موبایل */
+.navbar-collapse {
+    transition: all 0.3s ease;
+}
+
+
+    .navbar-collapse {
+        background: linear-gradient(135deg, #1a2a3a, #0f1a24);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border: 1px solid rgba(96, 165, 250, 0.2);
+    }
+    
+    .navbar-nav .nav-item {
+        margin: 0.25rem 0;
+    }
+    
+    .nav-link::after {
+        display: none;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem !important;
+    }
+}
+
+/* دکمه‌های خاص در نویگیشن (در صورت وجود) */
+.navbar .btn {
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-info {
+    border-color: #60a5fa;
+    color: #60a5fa;
+}
+
+.navbar .btn-outline-info:hover {
+    background: #60a5fa;
+    color: #0f172a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+}
+
+/* آیکون‌های داخل نویگیشن */
+.navbar-nav .nav-link i {
+    margin-left: 6px;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+/* انیمیشن برای لوگو */
+
+.navbar-brand {
+    animation: logoGlow 3s ease-in-out infinite;
+}
+
+/* هدر ثابت در بالای صفحه (اختیاری) */
+.navbar.fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+}
+
+body.has-fixed-navbar {
+    padding-top: 70px;
+}
+</style>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <div class="container-fluid" style="direction:rtl;">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CreateLogSheet</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -20,17 +212,15 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">خانه</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
+    <div class="container-fluid" style="">
         <main role="main" class="pb-3">
             @RenderBody()
 
