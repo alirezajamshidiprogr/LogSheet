@@ -131,7 +131,7 @@ namespace CreateLogSheet.Controllers
                     {
                         Id = pointId.Value,
                         Description = row.Field<string>("MeasuringPointDescription") ?? string.Empty,
-                        Order = row["MeasuringPointOrder"] == null ? 0 :  Convert.ToInt32(row["MeasuringPointOrder"])
+                        Order = row["MeasuringPointOrder"] == DBNull.Value ? 0 : Convert.ToInt32(row["MeasuringPointOrder"])
                     };
                     header.MeasuringPoints.Add(point);
                 }
