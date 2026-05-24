@@ -251,15 +251,15 @@ WHEN NOT MATCHED THEN
             return new MeasurementPoint
             {
                 Id = row.Field<int>("Id"),
-                MeasPoint = row.Field<double?>("MeasPoint") ?? 0,
+                MeasPoint = row.Field<string?>("MeasPoint") ?? string.Empty,
                 FunctionalLocation = row.Field<string>("FunctionalLocation") ?? string.Empty,
                 Description = row.Field<string>("Description") ?? string.Empty,
                 MeasuringPosition = row.Field<string>("MeasuringPosition") ?? string.Empty,
                 Characteristic = row.Field<string>("Characteristic") ?? string.Empty,
                 UnitOfMeasure = row.Field<string>("UnitOfMeasure") ?? string.Empty,
-                DecimalPlaces = row.Field<double?>("DecimalPlaces"),
-                LowerRangeLimit = row.Field<double?>("LowerRangeLimit"),
-                UpperRangeLimit = row.Field<double?>("UpperRangeLimit"),
+                DecimalPlaces = row.Field<int?>("DecimalPlaces"),
+                LowerRangeLimit = row.Field<string?>("LowerRangeLimit"),
+                UpperRangeLimit = row.Field<string?>("UpperRangeLimit"),
                 LogSheetHeaderName = row.Field<string>("LogSheetHeaderName") ?? string.Empty,
                 IsCalculated = (row.Field<bool?>("IsCalculated") ?? false),
                 FormulaResult = row.Field<string?>("FormulaResult") ?? "",
@@ -270,9 +270,9 @@ WHEN NOT MATCHED THEN
                 Afternoon_Value = FormatValue(row.Field<string?>("Afternoon_Value")),
                 Evening_Value = FormatValue(row.Field<string?>("Evening_Value")),
                 UnitId = row.Field<int>("UnitId"),
-                SheetOrder = row.Field<byte>("SheetOrder"),
-                SheetHeaderOrder = row.Field<byte>("SheetHeaderOrder"),
-                FRConstantValue = row.Field<double?>("FRConstantValue"),
+                SheetOrder = row.Field<int>("SheetOrder"),
+                SheetHeaderOrder = row.Field<int>("SheetHeaderOrder"),
+                FRConstantValue = row.Field<decimal?>("FRConstantValue"),
                 HeaderSummery = string.IsNullOrWhiteSpace(row.Field<string?>("HeaderSummery")) ? null : XDocument.Parse(row.Field<string>("HeaderSummery")),
         };
         }

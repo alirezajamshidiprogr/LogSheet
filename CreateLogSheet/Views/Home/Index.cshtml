@@ -8,11 +8,11 @@
 
     string ToSafeId(string input) => System.Text.RegularExpressions.Regex.Replace(input ?? "", @"[^a-zA-Z0-9]", "_");
 
-    var sheetGroups = Model.GroupBy(m => m.SheetName).OrderBy(item => item.Max(a => a.SheetOrder)).Select(g => new SelectListItem 
-    {
-       Text = g.Key,
-       Value = g.Max(x => x.Id).ToString(),
-    }).ToList();
+    var sheetGroups = Model.GroupBy(m => m.SheetName).OrderBy(item => item.Max(a => a.SheetOrder)).Select(g => new SelectListItem
+            {
+                Text = g.Key,
+                Value = g.Max(x => x.Id).ToString(),
+            }).ToList();
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -21,10 +21,10 @@
 <link href="~/css/logsheet.css" rel="stylesheet" />
 
 <style>
-    .navbar{
-    display:none ;
+    .navbar {
+        display: none;
     }
-    </style>
+</style>
 
 <div class="container-fluid">
     <div id="formulaPopup" style="position:absolute; display:none; background:#333; color:#fff; padding:6px 10px; border-radius:6px; z-index:1000;"></div>
@@ -58,6 +58,120 @@
             {
                 <div class="sheet-data" id="sheetRow-@sheet.Value" style="display:none;" data-active="false" data-sheet="@sheet.Text"></div>
             }
+        </div>
+
+        @* امضاهاي لاگ شيت *@
+        <div class="col-md-12">
+            <div class="signatures-section">
+                <div class="signatures-title">
+                    <i class="bi bi-pen"></i>
+                    <span>امضاهای مسئولین شیفت</span>
+                </div>
+                <div class="signatures-grid">
+                    <!-- شیفت صبح -->
+                    <div class="signature-card shift-morning">
+                        <div class="shift-header">
+                            <i class="bi bi-sunrise"></i>
+                            <span class="shift-name">شیفت صبح</span>
+                            <div class="signature-date">
+                                <i class="bi bi-calendar3"></i>
+                                <span id="morningDate"></span>
+                            </div>
+                            <span class="shift-time">06:00 - 14:00</span>
+                        </div>
+                        <div class="signature-body">
+                            <div class="signature-field">
+                                <label>نام اپراتور مسئول</label>
+                                <input type="text" class="form-control operator-name" id="morningOperator"
+                                       placeholder="نام و نام خانوادگی" value="علیرضا جمشیدی" readonly>
+                            </div>
+                            <div class="signature-field">
+                                <label>تایید نهایی</label>
+                                <div class="signature-final">
+                                    <div class="signature-image" id="morningSignatureImg">
+                                        <img src="/images/signature.png" alt="امضا">
+                                    </div>
+                                    <div class="signature-status confirmed">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        <span>تایید شده</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="signature-date">
+                                <i class="bi bi-calendar3"></i>
+                                <span id="morningDate"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- شیفت عصر -->
+                    <div class="signature-card shift-afternoon">
+                        <div class="shift-header">
+                            <i class="bi bi-sunset"></i>
+                            <span class="shift-name">
+                                شیفت عصر</span>
+                            <div class="signature-date">
+                                <i class="bi bi-calendar3"></i>
+                                <span id="afternoonDate"></span>
+                            </div>
+                            <span class="shift-time">14:00 - 22:00</span>
+                        </div>
+                        <div class="signature-body">
+                            <div class="signature-field">
+                                <label>نام اپراتور مسئول</label>
+                                <input type="text" class="form-control operator-name" id="afternoonOperator"
+                                       placeholder="نام و نام خانوادگی" value="محمد رضایی" readonly>
+                            </div>
+                            <div class="signature-field">
+                                <label>تایید نهایی</label>
+                                <div class="signature-final">
+                                    <div class="signature-image" id="afternoonSignatureImg">
+                                        <img src="/images/signature.png" alt="امضا">
+                                    </div>
+                                    <div class="signature-status confirmed">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        <span>تایید شده</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- شیفت شب -->
+                    <div class="signature-card shift-night">
+                        <div class="shift-header">
+                            <i class="bi bi-moon-stars"></i>
+                            <span class="shift-name">شیفت شب</span>
+                            <span class="shift-time">22:00 - 06:00</span>
+                            <div class="signature-date">
+                                <i class="bi bi-calendar3"></i>
+                                <span id="nightDate"></span>
+                            </div>
+                        </div>
+                        <div class="signature-body">
+                            <div class="signature-field">
+                                <label>نام اپراتور مسئول</label>
+                                <input type="text" class="form-control operator-name" id="nightOperator"
+                                       placeholder="نام و نام خانوادگی" value="سعید کریمی" readonly>
+                            </div>
+                            <div class="signature-field">
+                                <label>تایید نهایی</label>
+                                <div class="signature-final">
+                                    <div class="signature-image" id="nightSignatureImg">
+                                        <img src="/images/signature.png" alt="امضا">
+                                    </div>
+                                    <div class="signature-status confirmed">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        <span>تایید شده</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -129,6 +243,20 @@
             }
 
             loadAllSheets();
+
+            // تنظیم تاریخ امضاها
+            function setSignatureDates() {
+                const today = new Date().toLocaleDateString('fa-IR');
+                $('#morningDate').text(today);
+                $('#afternoonDate').text(today);
+                $('#nightDate').text(today);
+            }
+
+            // راه‌اندازی
+            $(document).ready(function () {
+                // تنظیم تاریخ امضاها
+                setSignatureDates();
+            });
         });
     </script>
 }

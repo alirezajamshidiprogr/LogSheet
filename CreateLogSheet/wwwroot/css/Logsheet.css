@@ -384,75 +384,186 @@ body {
 }
 
 
+
 .sheet-list-col {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    height: 100%;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    padding: 0;
+    overflow: hidden;
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    transition: all 0.3s ease;
 }
 
-    /* عنوان ستون */
+    .sheet-list-col:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-2px);
+    }
+
+    /* عنوان بخش */
     .sheet-list-col h4 {
-        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+        color: #083f79;
+        padding: 1rem 1.25rem;
+        margin: 0;
+        font-size: 1rem;
         font-weight: 600;
-        margin-bottom: 15px;
-        color: #1e3a8a;
-        text-align: center;
-    }
-
-    /* لیست Sheets */
-    .sheet-list-col .list-group {
-        max-height: 80vh; /* ارتفاع قابل اسکرول */
-        border: none;
-        padding: 0;
-    }
-
-    /* آیتم‌های لیست */
-    .sheet-list-col .list-group-item {
-        background-color: #fff;
-        border-radius: 6px;
-        margin-bottom: 8px;
-        padding: 10px 12px;
-        font-weight: 500;
-        color: #495057;
-        transition: all 0.2s ease;
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 8px;
+        border-bottom: none;
     }
 
-        /* هاور روی آیتم‌ها */
-        .sheet-list-col .list-group-item:hover {
-            background-color: #e2f0fb;
-            cursor: pointer;
-            color: #1e3a8a;
-            transform: translateX(3px);
+        .sheet-list-col h4::before {
+            content: "📋";
+            font-size: 1.1rem;
         }
 
-        /* آیتم انتخاب شده (اختیاری، می‌تونی کلاس active اضافه کنی) */
-        .sheet-list-col .list-group-item.active {
-            background-color: #3b82f6;
-            color: #fff;
-            font-weight: 600;
-        }
-
-    /* اسکرول بار زیبا */
-    .sheet-list-col .list-group::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .sheet-list-col .list-group::-webkit-scrollbar-thumb {
-        background-color: rgba(0,0,0,0.2);
-        border-radius: 3px;
-    }
-
-    .sheet-list-col .list-group::-webkit-scrollbar-track {
+    /* لیست */
+    .sheet-list-col .list-group {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.5rem;
+        margin: 0;
+        list-style: none;
         background: transparent;
     }
 
+        /* اسکرول بار سفارشی */
+        .sheet-list-col .list-group::-webkit-scrollbar {
+            width: 4px;
+        }
 
-/.card-units {
+        .sheet-list-col .list-group::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+
+        .sheet-list-col .list-group::-webkit-scrollbar-thumb {
+            background: var(--primary-blue-light);
+            border-radius: 10px;
+        }
+
+            .sheet-list-col .list-group::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-blue);
+            }
+
+    /* آیتم‌های لیست */
+    .sheet-list-col .list-group-item {
+        background: transparent;
+        border: none;
+        border-radius: 12px;
+        margin-bottom: 6px;
+        padding: 10px 14px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--gray-700);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .sheet-list-col .list-group-item::before {
+            content: "📄";
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* حالت hover */
+        .sheet-list-col .list-group-item:hover {
+            background: linear-gradient(95deg, #eff6ff, #dbeafe);
+            color: var(--primary-blue-dark);
+            transform: translateX(3px);
+        }
+
+            .sheet-list-col .list-group-item:hover::before {
+                opacity: 1;
+            }
+
+        /* آیتم فعال */
+        .sheet-list-col .list-group-item.active-sheet {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+            .sheet-list-col .list-group-item.active-sheet::before {
+                content: "📌";
+                opacity: 1;
+            }
+
+            .sheet-list-col .list-group-item.active-sheet:hover {
+                transform: translateX(0);
+            }
+
+    /* شمارنده تعداد آیتم‌ها (اختیاری) */
+    .sheet-list-col .list-count {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: rgba(255,255,255,0.2);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 500;
+    }
+
+    /* انیمیشن ورود آیتم‌ها */
+    .sheet-list-col .list-group-item {
+        animation: slideInRight 0.3s ease-out forwards;
+        opacity: 0;
+    }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .sheet-list-col {
+        height: auto;
+        max-height: 40vh;
+        margin-bottom: 1rem;
+    }
+
+        .sheet-list-col h4 {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .sheet-list-col .list-group-item {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+}
+
+/* وضعیت خالی (اختیاری) */
+.sheet-list-col .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray-400);
+}
+
+    .sheet-list-col .empty-state i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+.card-units {
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
     overflow: hidden;
@@ -517,7 +628,7 @@ body {
 }
 
 .col-md-10 {
-    height: 75vh;
+    height: 62vh;
     overflow: auto;
 }
 
@@ -1015,7 +1126,275 @@ body.industrial-mode {
     background: var(--industrial-blue-primary) !important;
 }
 
-/* می‌توانید با افزودن کلاس industrial-mode به body، کل صفحه را صنعتی کنید */
-/* مثال: <body class="industrial-mode"> */
 
-/* یا فقط بخش‌های خاص را با کلاس industrial جداگانه استایل دهید */
+/* ========== استایل بخش امضاها ========== */
+/* ========== استایل بخش امضاها ========== */
+.signatures-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(4px);
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.signatures-title {
+    padding: 1rem 1.25rem;
+    background: linear-gradient(145deg, var(--gray-50), white);
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #083f79;
+    margin: 16px;
+    color: #fff;
+    border-radius: 8px;
+}
+
+    .signatures-title i {
+        font-size: 1.2rem;
+        color: var(--primary-blue);
+    }
+
+    .signatures-title span {
+        font-weight: 600;
+        color: var(--gray-800);
+        font-size: 1rem;
+    }
+
+.signatures-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1.25rem;
+    background: #f0f7ff;
+    border-radius: 8px;
+}
+
+.signature-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    height: 78%;
+}
+
+    .signature-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+    }
+
+/* هدر هر شیفت */
+.shift-header {
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid;
+}
+
+.shift-morning .shift-header {
+    background: linear-gradient(145deg, #fef3c7, #fffbeb);
+    border-bottom-color: #f59e0b;
+}
+
+    .shift-morning .shift-header i {
+        color: #f59e0b;
+    }
+
+.shift-afternoon .shift-header {
+    background: linear-gradient(145deg, #fed7aa, #fff7ed);
+    border-bottom-color: #ea580c;
+}
+
+    .shift-afternoon .shift-header i {
+        color: #ea580c;
+    }
+
+.shift-night .shift-header {
+    background: linear-gradient(145deg, #e0e7ff, #eef2ff);
+    border-bottom-color: #4f46e5;
+}
+
+    .shift-night .shift-header i {
+        color: #4f46e5;
+    }
+
+.shift-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.shift-time {
+    font-size: 0.65rem;
+    color: var(--gray-500);
+    background: rgba(0,0,0,0.05);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* بدنه کارت */
+.signature-body {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.signature-field {
+    margin-bottom: 1rem;
+}
+
+    .signature-field:first-child {
+        margin-bottom: 0.75rem;
+    }
+
+    .signature-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .signature-field label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--gray-600);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .signature-field .operator-name {
+        border-radius: 10px;
+        border: 1px solid var(--gray-200);
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        background: var(--gray-50);
+        color: var(--gray-700);
+        width: 100%;
+    }
+
+/* بخش امضای نهایی - سمت چپ و بزرگ */
+.signature-final {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid var(--gray-200);
+    width: 100%;
+}
+
+.signature-image {
+    flex: 2;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+    .signature-image img {
+        max-width: 100%;
+        max-height: 80px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+.signature-status {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+    .signature-status.confirmed {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+        .signature-status.confirmed i {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+    .signature-status.pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+        .signature-status.pending i {
+            color: #f59e0b;
+        }
+
+.signature-date {
+    text-align: left;
+    padding-top: 10px;
+    margin-top: auto;
+    border-top: 1px solid var(--gray-100);
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+}
+
+    .signature-date i {
+        font-size: 0.7rem;
+    }
+
+/* ریسپانسیو */
+@media (max-width: 992px) {
+    .signatures-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .signature-final {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .signature-status {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .signature-image {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .signature-date {
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .signatures-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.signature-image img {
+    max-width: 100%;
+    max-height: 120px; /* افزایش از 80 به 120 */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.signature-final {
+    padding: 20px; /* افزایش فاصله داخلی */
+}

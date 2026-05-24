@@ -22,6 +22,11 @@ namespace CreateLogSheet.Controllers
 
             // View مدل List<MeasurementPoint> خواهد بود
             return View(allData);
+        } 
+        
+        public IActionResult IndexCreatedReports()
+        {
+            return View();
         }
 
         [HttpPost]

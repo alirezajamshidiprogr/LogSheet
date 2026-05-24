@@ -1,0 +1,801 @@
+﻿@model List<SavedReportViewModel>
+
+@{
+    ViewData["Title"] = "مدیریت گزارش‌ها";
+    // ایجاد چند گزارش نمونه برای نمایش
+    var sampleReports = new List<SavedReportViewModel>
+    {
+        new SavedReportViewModel
+        {
+            Id = 1,
+            ReportName = "گزارش عملکرد مرداد 1403",
+            OperationalUnit = "واحد تقطیر",
+            AccessType = "public",
+            StartDate = "1403/05/01",
+            EndDate = "1403/05/31",
+            CreatedDate = DateTime.Now.AddDays(-5),
+            FiltersCount = 3
+        },
+        new SavedReportViewModel
+        {
+            Id = 2,
+            ReportName = "گزارش واحد ویسبریکر - تیر 1403",
+            OperationalUnit = "واحد ویسبریکر",
+            AccessType = "public",
+            StartDate = "1403/04/01",
+            EndDate = "1403/04/31",
+            CreatedDate = DateTime.Now.AddDays(-15),
+            FiltersCount = 5
+        },
+        new SavedReportViewModel
+        {
+            Id = 3,
+            ReportName = "گزارش خصوصی کنترل فشار",
+            OperationalUnit = "واحد تقطیر در خلا",
+            AccessType = "private",
+            StartDate = "1403/06/01",
+            EndDate = "1403/06/15",
+            CreatedDate = DateTime.Now.AddDays(-2),
+            FiltersCount = 2
+        },
+        new SavedReportViewModel
+        {
+            Id = 4,
+            ReportName = "آنالیز دمای خروجی کوره‌ها",
+            OperationalUnit = "واحد کوره",
+            AccessType = "public",
+            StartDate = "1403/05/15",
+            EndDate = "1403/06/15",
+            CreatedDate = DateTime.Now.AddDays(-8),
+            FiltersCount = 4
+        },
+        new SavedReportViewModel
+        {
+            Id = 5,
+            ReportName = "گزارش عملکرد پمپ‌ها",
+            OperationalUnit = "واحد پمپ",
+            AccessType = "public",
+            StartDate = "1403/04/01",
+            EndDate = "1403/06/30",
+            CreatedDate = DateTime.Now.AddDays(-20),
+            FiltersCount = 6
+        },
+        new SavedReportViewModel
+        {
+            Id = 6,
+            ReportName = "گزارش خصوصی تنظیمات ایمنی",
+            OperationalUnit = "واحد ایمنی",
+            AccessType = "private",
+            StartDate = "1403/06/01",
+            EndDate = "1403/06/10",
+            CreatedDate = DateTime.Now.AddDays(-1),
+            FiltersCount = 3
+        }
+    };
+
+    // اگر مدل از سرور داده دارد از آن استفاده کن در غیر این صورت از sample استفاده کن
+    var displayReports = (Model != null && Model.Any()) ? Model : sampleReports;
+}
+
+<style>
+    .navbar {
+        display: none !important;
+    }
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<link href="~/css/reportcreated.css" rel="stylesheet" />
+
+<div class="container-fluid px-4 py-4">
+    <!-- هدر صفحه -->
+    <div class="reports-header mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h2 class="mb-1">
+                    <i class="bi bi-archive"></i> گزارش‌های ذخیره شده
+                </h2>
+                <p class="text-muted mb-0">مدیریت و مشاهده گزارش‌های ایجاد شده</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary" id="refreshBtn">
+                    <i class="bi bi-arrow-repeat"></i> بروزرسانی
+                </button>
+                <a href="@Url.Action("Index", "LogSheetReport")" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> گزارش جدید
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- فیلترها -->
+    <div class="filters-card mb-4">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">جستجو</label>
+                <input type="text" id="searchInput" class="form-control" placeholder="جستجو در نام گزارش...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">نوع دسترسی</label>
+                <select id="accessTypeFilter" class="form-select">
+                    <option value="">همه</option>
+                    <option value="public">عمومی</option>
+                    <option value="private">خصوصی</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">واحد عملیاتی</label>
+                <select id="unitFilter" class="form-select">
+                    <option value="">همه</option>
+                    @if (displayReports != null)
+                    {
+                        foreach (var unit in displayReports.Select(x => x.OperationalUnit).Distinct())
+                        {
+                            <option value="@unit">@unit</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">محدوده تاریخ</label>
+                <select id="dateFilter" class="form-select">
+                    <option value="">همه</option>
+                    <option value="today">امروز</option>
+                    <option value="thisWeek">این هفته</option>
+                    <option value="thisMonth">این ماه</option>
+                    <option value="thisYear">امسال</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- کارت‌های گزارش‌ها -->
+    <div class="reports-grid" id="reportsGrid">
+        @if (displayReports != null && displayReports.Any())
+        {
+            foreach (var report in displayReports.OrderByDescending(x => x.CreatedDate))
+            {
+                <div class="report-card" data-report-id="@report.Id" data-access-type="@report.AccessType" data-operational-unit="@report.OperationalUnit" data-created-date="@report.CreatedDate.ToString("yyyy-MM-dd")">
+                    <div class="report-card-header">
+                        <div class="report-icon">
+                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                        </div>
+                        <div class="report-actions">
+                            @if (report.AccessType == "private")
+                            {
+                                <span class="badge-private">
+                                    <i class="bi bi-lock"></i> خصوصی
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge-public">
+                                    <i class="bi bi-globe2"></i> عمومی
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="report-card-body">
+                        <h5 class="report-name">@report.ReportName</h5>
+                        <div class="report-info">
+                            <div class="info-item">
+                                <i class="bi bi-building"></i>
+                                <span>@report.OperationalUnit</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span>@(Convert.ToDateTime(report.CreatedDate).ToString("yyyy/MM/dd"))</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-calendar-range"></i>
+                                <span>@report.StartDate تا @report.EndDate</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-funnel"></i>
+                                <span>@(report.FiltersCount) فیلتر</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-card-footer">
+                        <button class="btn-view-report" data-id="@report.Id">
+                            <i class="bi bi-eye"></i> مشاهده گزارش
+                        </button>
+                        <button class="btn-delete-report" data-id="@report.Id" data-name="@report.ReportName">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-reports" id="emptyState">
+                <i class="bi bi-inbox"></i>
+                <h4>هیچ گزارشی یافت نشد</h4>
+                <p>برای شروع، یک گزارش جدید ایجاد کنید.</p>
+                <a href="@Url.Action("Index", "LogSheetReport")" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> ایجاد گزارش جدید
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal مشاهده گزارش (نمایش دمو) -->
+<!-- Modal مشاهده گزارش -->
+<div class="modal fade" id="viewReportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                    <span id="modalReportTitle"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- اطلاعات گزارش -->
+                <div class="report-info-section mb-4">
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="bi bi-building"></i> واحد عملیاتی:
+                        </div>
+                        <div class="info-value" id="modalOperationalUnit">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="bi bi-lock"></i> نوع دسترسی:
+                        </div>
+                        <div class="info-value" id="modalAccessType">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="bi bi-calendar3"></i> تاریخ ایجاد:
+                        </div>
+                        <div class="info-value" id="modalCreatedDate">-</div>
+                    </div>
+                </div>
+
+                <!-- فیلترهای اعمال شده (خلاصه) -->
+                <div class="filters-section mb-4">
+                    <div class="filters-title">
+                        <i class="bi bi-funnel"></i> فیلترهای اعمال شده:
+                    </div>
+                    <div id="modalFilters" class="filters-badges">
+                        <!-- فیلترها اینجا نمایش داده می‌شوند -->
+                    </div>
+                </div>
+
+                <!-- انتخاب بازه زمانی جدید -->
+                <div class="date-range-section">
+                    <div class="section-title mb-3">
+                        <i class="bi bi-calendar-range"></i> انتخاب بازه زمانی برای نمایش گزارش
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">تاریخ شروع</label>
+                            <input type="date" class="form-control" id="reportStartDate" placeholder="تاریخ شروع">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">تاریخ پایان</label>
+                            <input type="date" class="form-control" id="reportEndDate" placeholder="تاریخ پایان">
+                        </div>
+                    </div>
+
+                    <!-- دکمه‌های پیشنهادی بازه زمانی -->
+                    <div class="quick-date-buttons mt-3">
+                        <button type="button" class="quick-date-btn" data-days="7">۷ روز اخیر</button>
+                        <button type="button" class="quick-date-btn" data-days="30">۳۰ روز اخیر</button>
+                        <button type="button" class="quick-date-btn" data-days="90">۹۰ روز اخیر</button>
+                        <button type="button" class="quick-date-btn" data-days="365">یک سال اخیر</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> انصراف
+                </button>
+                <button type="button" class="btn btn-primary" id="showReportBtn">
+                    <i class="bi bi-eye"></i> نمایش گزارش
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            let allReports = [];
+
+            // دیتای نمونه برای گزارش‌ها (در صورت نبود دیتا از سرور)
+            const sampleReportsData = [
+                {
+                    id: 1,
+                    reportName: "گزارش عملکرد مرداد 1403",
+                    operationalUnit: "واحد تقطیر",
+                    accessType: "public",
+                    startDate: "1403/05/01",
+                    endDate: "1403/05/31",
+                    createdDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 3,
+                    filters: {
+                        sheetNames: ["CDU1-FM-04", "CDU1-FM-03"],
+                        headerNames: ["Splittertower, V-112", "Stabilizertower, V-110"],
+                        characteristics: ["Pressure", "Temperature"]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-04", HeaderName: "Splittertower, V-112", Description: "Top pressure", MeasuringPosition: "PRC-139", Characteristic: "Pressure", UnitOfMeasure: "bar" },
+                        { id: 2, SheetName: "CDU1-FM-04", HeaderName: "Splittertower, V-112", Description: "Flow : feed", MeasuringPosition: "FR-136", Characteristic: "Flow", UnitOfMeasure: "CMH" },
+                        { id: 3, SheetName: "CDU1-FM-03", HeaderName: "Stabilizertower, V-110", Description: "Bottom temperature", MeasuringPosition: "TI-222", Characteristic: "Temperature", UnitOfMeasure: "°C" }
+                    ]
+                },
+                {
+                    id: 2,
+                    reportName: "گزارش واحد ویسبریکر - تیر 1403",
+                    operationalUnit: "واحد ویسبریکر",
+                    accessType: "public",
+                    startDate: "1403/04/01",
+                    endDate: "1403/04/31",
+                    createdDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 5,
+                    filters: {
+                        sheetNames: ["CDU1-FM-02(Page1)"],
+                        headerNames: ["Vacuumheater,H-151", "Vacuumtower,V-151"],
+                        characteristics: ["Pressure", "Temperature", "Flow"]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-02(Page1)", HeaderName: "Vacuumheater,H-151", Description: "Inlet temp.", MeasuringPosition: "TI-122", Characteristic: "Temperature", UnitOfMeasure: "°C" },
+                        { id: 2, SheetName: "CDU1-FM-02(Page1)", HeaderName: "Vacuumtower,V-151", Description: "Pressure : top", MeasuringPosition: "PI-166", Characteristic: "Pressure", UnitOfMeasure: "bar" }
+                    ]
+                },
+                {
+                    id: 3,
+                    reportName: "گزارش خصوصی کنترل فشار",
+                    operationalUnit: "واحد تقطیر در خلا",
+                    accessType: "private",
+                    startDate: "1403/06/01",
+                    endDate: "1403/06/15",
+                    createdDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 2,
+                    filters: {
+                        sheetNames: ["CDU1-FM-O1"],
+                        characteristics: ["Pressure"]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-O1", HeaderName: "Flashdrum,V-101", Description: "Pressure", MeasuringPosition: "PR-140", Characteristic: "Pressure", UnitOfMeasure: "bar" },
+                        { id: 2, SheetName: "CDU1-FM-O1", HeaderName: "Desalter,V-126", Description: "Pressure", MeasuringPosition: "PIC-125", Characteristic: "Pressure", UnitOfMeasure: "bar" }
+                    ]
+                },
+                {
+                    id: 4,
+                    reportName: "آنالیز دمای خروجی کوره‌ها",
+                    operationalUnit: "واحد کوره",
+                    accessType: "public",
+                    startDate: "1403/05/15",
+                    endDate: "1403/06/15",
+                    createdDate: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 4,
+                    filters: {
+                        characteristics: ["Temperature"],
+                        descriptions: ["Outlet temp.", "Combine temp.", "Stack temp."]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-02(Page1)", HeaderName: "Atmosphericheater,H-101", Description: "Outlet temp.", MeasuringPosition: "TI-049/056", Characteristic: "Temperature", UnitOfMeasure: "°C" },
+                        { id: 2, SheetName: "CDU1-FM-02(Page1)", HeaderName: "Atmosphericheater,H-101", Description: "Combine temp.", MeasuringPosition: "TI-057", Characteristic: "Temperature", UnitOfMeasure: "°C" }
+                    ]
+                },
+                {
+                    id: 5,
+                    reportName: "گزارش عملکرد پمپ‌ها",
+                    operationalUnit: "واحد پمپ",
+                    accessType: "public",
+                    startDate: "1403/04/01",
+                    endDate: "1403/06/30",
+                    createdDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 6,
+                    filters: {
+                        headerNames: ["Pumpsdailyrunningrecords"],
+                        descriptions: ["Pump_101", "Pump_102", "Pump_103"]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-O1", HeaderName: "Pumpsdailyrunningrecords", Description: "Pump_101", MeasuringPosition: "Pump_101", Characteristic: "character", UnitOfMeasure: "bar" },
+                        { id: 2, SheetName: "CDU1-FM-O1", HeaderName: "Pumpsdailyrunningrecords", Description: "Pump_102", MeasuringPosition: "Pump_102", Characteristic: "character", UnitOfMeasure: "bar" },
+                        { id: 3, SheetName: "CDU1-FM-O1", HeaderName: "Pumpsdailyrunningrecords", Description: "Pump_103", MeasuringPosition: "Pump_103", Characteristic: "character", UnitOfMeasure: "bar" }
+                    ]
+                },
+                {
+                    id: 6,
+                    reportName: "گزارش خصوصی تنظیمات ایمنی",
+                    operationalUnit: "واحد ایمنی",
+                    accessType: "private",
+                    startDate: "1403/06/01",
+                    endDate: "1403/06/10",
+                    createdDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    filtersCount: 3,
+                    filters: {
+                        sheetNames: ["CDU1-FM-04"],
+                        characteristics: ["Pressure", "Flow"]
+                    },
+                    reportData: [
+                        { id: 1, SheetName: "CDU1-FM-04", HeaderName: "Splittertower,V-112", Description: "Top pressure", MeasuringPosition: "PRC-139", Characteristic: "Pressure", UnitOfMeasure: "bar" },
+                        { id: 2, SheetName: "CDU1-FM-04", HeaderName: "Splittertower,V-112", Description: "Flow : feed", MeasuringPosition: "FR-136", Characteristic: "Flow", UnitOfMeasure: "CMH" }
+                    ]
+                }
+            ];
+
+            // گرفتن دیتای گزارش‌ها از سرور یا استفاده از نمونه
+            function loadReports() {
+                // ابتدا سعی می‌کنیم از سرور بگیریم
+                $.ajax({
+                    url: '/LogSheetReport/GetAllReports',
+                    type: 'GET',
+                    timeout: 3000,
+                    success: function (response) {
+                        if (response.success && response.data && response.data.length > 0) {
+                            allReports = response.data;
+                        } else {
+                            // اگر از سرور دیتایی نیامد، از نمونه استفاده کن
+                            allReports = sampleReportsData;
+                        }
+                        filterAndRender();
+                    },
+                    error: function () {
+                        // در صورت خطا، از نمونه استفاده کن
+                        console.log('خطا در بارگذاری از سرور، استفاده از داده‌های نمونه');
+                        allReports = sampleReportsData;
+                        filterAndRender();
+                    }
+                });
+            }
+
+            // فیلتر و رندر گزارش‌ها
+            function filterAndRender() {
+                const searchText = $('#searchInput').val().toLowerCase();
+                const accessType = $('#accessTypeFilter').val();
+                const operationalUnit = $('#unitFilter').val();
+                const dateFilter = $('#dateFilter').val();
+
+                let filtered = [...allReports];
+
+                if (searchText) {
+                    filtered = filtered.filter(r => r.reportName && r.reportName.toLowerCase().includes(searchText));
+                }
+
+                if (accessType) {
+                    filtered = filtered.filter(r => r.accessType === accessType);
+                }
+
+                if (operationalUnit) {
+                    filtered = filtered.filter(r => r.operationalUnit === operationalUnit);
+                }
+
+                if (dateFilter) {
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                    filtered = filtered.filter(r => {
+                        const created = new Date(r.createdDate);
+                        if (dateFilter === 'today') {
+                            return created >= today;
+                        } else if (dateFilter === 'thisWeek') {
+                            const weekAgo = new Date(today);
+                            weekAgo.setDate(today.getDate() - 7);
+                            return created >= weekAgo;
+                        } else if (dateFilter === 'thisMonth') {
+                            return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+                        } else if (dateFilter === 'thisYear') {
+                            return created.getFullYear() === now.getFullYear();
+                        }
+                        return true;
+                    });
+                }
+
+                renderReports(filtered);
+            }
+
+            // رندر کارت‌های گزارش
+            function renderReports(reports) {
+                const grid = $('#reportsGrid');
+
+                if (!reports.length) {
+                    grid.html(`
+                                <div class="empty-reports" id="emptyState">
+                                    <i class="bi bi-inbox"></i>
+                                    <h4>هیچ گزارشی یافت نشد</h4>
+                                    <p>با فیلترهای انتخاب شده، هیچ گزارشی پیدا نشد.</p>
+                                </div>
+                            `);
+                    return;
+                }
+
+                let html = '';
+                for (const report of reports) {
+                    const createdDate = new Date(report.createdDate).toLocaleDateString('fa-IR');
+                    html += `
+                                <div class="report-card" data-report-id="${report.id}" data-access-type="${report.accessType}" data-operational-unit="${report.operationalUnit}">
+                                    <div class="report-card-header">
+                                        <div class="report-icon">
+                                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                                        </div>
+                                        <div class="report-actions">
+                                            ${report.accessType === 'private'
+                            ? '<span class="badge-private"><i class="bi bi-lock"></i> خصوصی</span>'
+                            : '<span class="badge-public"><i class="bi bi-globe2"></i> عمومی</span>'}
+                                        </div>
+                                    </div>
+                                    <div class="report-card-body">
+                                        <h5 class="report-name">${escapeHtml(report.reportName)}</h5>
+                                        <div class="report-info">
+                                            <div class="info-item">
+                                                <i class="bi bi-building"></i>
+                                                <span>${escapeHtml(report.operationalUnit)}</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="bi bi-calendar3"></i>
+                                                <span>${createdDate}</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="bi bi-calendar-range"></i>
+                                                <span>${report.startDate || '-'} تا ${report.endDate || '-'}</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="bi bi-funnel"></i>
+                                                <span>${report.filtersCount || 0} فیلتر</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="report-card-footer">
+                                        <button class="btn-view-report" data-id="${report.id}">
+                                            <i class="bi bi-eye"></i> مشاهده گزارش
+                                        </button>
+                                        <button class="btn-delete-report" data-id="${report.id}" data-name="${escapeHtml(report.reportName)}">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                }
+
+                grid.html(html);
+                attachCardEvents();
+            }
+
+            // اتصال رویدادهای کارت‌ها
+            function attachCardEvents() {
+                $('.btn-view-report').off('click').on('click', function () {
+                    const reportId = $(this).data('id');
+                    viewReport(reportId);
+                });
+
+                $('.btn-delete-report').off('click').on('click', function () {
+                    const reportId = $(this).data('id');
+                    const reportName = $(this).data('name');
+
+                    Swal.fire({
+                        title: 'حذف گزارش',
+                        text: `آیا از حذف گزارش "${reportName}" اطمینان دارید؟`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'بله، حذف شود',
+                        cancelButtonText: 'انصراف'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // حذف از لیست محلی
+                            allReports = allReports.filter(r => r.id != reportId);
+                            renderReports(allReports);
+                            Swal.fire('موفق', 'گزارش با موفقیت حذف شد', 'success');
+                        }
+                    });
+                });
+            }
+
+            // نمایش گزارش
+            function viewReport(reportId) {
+                const report = allReports.find(r => r.id == reportId);
+                if (report) {
+                    displayReportModal(report);
+                } else {
+                    Swal.fire('خطا', 'گزارش مورد نظر یافت نشد', 'error');
+                }
+            }
+
+            // نمایش گزارش در Modal (نسخه جدید)
+            function displayReportModal(report) {
+                $('#modalReportTitle').text(report.reportName);
+                $('#modalOperationalUnit').text(report.operationalUnit);
+
+                const accessTypeText = report.accessType === 'private' ? 'خصوصی' : 'عمومی';
+                const accessTypeIcon = report.accessType === 'private' ? '<i class="bi bi-lock"></i>' : '<i class="bi bi-globe2"></i>';
+                $('#modalAccessType').html(`${accessTypeIcon} ${accessTypeText}`);
+
+                const createdDate = new Date(report.createdDate).toLocaleDateString('fa-IR');
+                $('#modalCreatedDate').text(createdDate);
+
+                // نمایش فیلترها به صورت Badge
+                const filters = report.filters || {};
+                const filterItems = [];
+
+                if (filters.sheetNames?.length) {
+                    filters.sheetNames.forEach(f => filterItems.push({ label: 'شیت', value: f }));
+                }
+                if (filters.headerNames?.length) {
+                    filters.headerNames.forEach(f => filterItems.push({ label: 'گروه', value: f }));
+                }
+                if (filters.descriptions?.length) {
+                    filters.descriptions.forEach(f => filterItems.push({ label: 'شرح', value: f }));
+                }
+                if (filters.measuringPositions?.length) {
+                    filters.measuringPositions.forEach(f => filterItems.push({ label: 'موقعیت', value: f }));
+                }
+                if (filters.characteristics?.length) {
+                    filters.characteristics.forEach(f => filterItems.push({ label: 'ویژگی', value: f }));
+                }
+                if (filters.units?.length) {
+                    filters.units.forEach(f => filterItems.push({ label: 'واحد', value: f }));
+                }
+
+                let filtersHtml = '';
+                if (filterItems.length) {
+                    filterItems.forEach(item => {
+                        filtersHtml += `<span class="filter-badge"><span class="filter-label">${item.label}:</span> ${escapeHtml(item.value)}</span>`;
+                    });
+                } else {
+                    filtersHtml = '<span class="text-muted">هیچ فیلتری اعمال نشده است</span>';
+                }
+
+                $('#modalFilters').html(filtersHtml);
+
+                // تنظیم تاریخ‌های پیش‌فرض (بازه ذخیره شده گزارش)
+                if (report.startDate) {
+                    // تبدیل تاریخ شمسی به میلادی برای input date
+                    const startDateObj = convertPersianToGregorian(report.startDate);
+                    if (startDateObj) $('#reportStartDate').val(startDateObj.toISOString().split('T')[0]);
+                } else {
+                    // تاریخ پیش‌فرض: 30 روز قبل
+                    const defaultStart = new Date();
+                    defaultStart.setDate(defaultStart.getDate() - 30);
+                    $('#reportStartDate').val(defaultStart.toISOString().split('T')[0]);
+                }
+
+                if (report.endDate) {
+                    const endDateObj = convertPersianToGregorian(report.endDate);
+                    if (endDateObj) $('#reportEndDate').val(endDateObj.toISOString().split('T')[0]);
+                } else {
+                    // تاریخ پیش‌فرض: امروز
+                    const defaultEnd = new Date();
+                    $('#reportEndDate').val(defaultEnd.toISOString().split('T')[0]);
+                }
+            }
+
+            // تبدیل تاریخ شمسی به میلادی (ساده)
+function convertPersianToGregorian(persianDate) {
+    if (!persianDate) return null;
+    // فرمت: 1403/05/01
+    const parts = persianDate.split('/');
+    if (parts.length !== 3) return null;
+    try {
+        // این یک تبدیل ساده است - برای تبدیل دقیق از کتابخانه استفاده کنید
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]);
+        const day = parseInt(parts[2]);
+        // تبدیل تقریبی - برای استفاده واقعی از کتابخانه مثل moment-jalaali استفاده کنید
+        const gregorianDate = new Date(year - 621, month - 1, day);
+        return gregorianDate;
+    } catch(e) {
+        return null;
+    }
+}
+
+// دکمه‌های پیشنهادی بازه زمانی
+$('.quick-date-btn').click(function() {
+    const days = $(this).data('days');
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - days);
+    
+    $('#reportStartDate').val(startDate.toISOString().split('T')[0]);
+    $('#reportEndDate').val(endDate.toISOString().split('T')[0]);
+});
+
+// نمایش گزارش در تب جدید
+$('#showReportBtn').click(function() {
+    const reportId = $(this).data('report-id') || currentReportId;
+    const startDate = $('#reportStartDate').val();
+    const endDate = $('#reportEndDate').val();
+    
+    if (!startDate || !endDate) {
+        Swal.fire('خطا', 'لطفاً بازه زمانی را انتخاب کنید', 'error');
+        return;
+    }
+    
+    if (new Date(startDate) > new Date(endDate)) {
+        Swal.fire('خطا', 'تاریخ شروع نباید از تاریخ پایان بزرگتر باشد', 'error');
+        return;
+    }
+    
+    // ساخت URL با پارامترها
+    const url = `/LogSheetReport/ViewReport?id=${reportId}&startDate=${startDate}&endDate=${endDate}`;
+    
+    // باز کردن در تب جدید
+    window.open(url, '_blank');
+});
+
+// ذخیره reportId جاری
+let currentReportId = null;
+
+// در تابع viewReport مقداردهی کن
+function viewReport(reportId) {
+    currentReportId = reportId;
+    const report = allReports.find(r => r.id == reportId);
+    if (report) {
+        displayReportModal(report);
+        $('#showReportBtn').data('report-id', reportId);
+        $('#viewReportModal').modal('show');
+    } else {
+        Swal.fire('خطا', 'گزارش مورد نظر یافت نشد', 'error');
+    }
+}
+
+            // خروجی Excel
+            $('#exportReportBtn').click(function () {
+                Swal.fire('اطلاع', 'قابلیت خروجی Excel به زودی اضافه می‌شود', 'info');
+            });
+
+            // چاپ
+            $('#printReportBtn').click(function () {
+                const printContent = $('#viewReportModal .modal-body').html();
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                            <html dir="rtl">
+                            <head>
+                                <title>چاپ گزارش</title>
+                                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+                                <style>
+                                    body { padding: 20px; font-family: 'Vazir', sans-serif; }
+                                    .report-info-bar { margin-bottom: 20px; }
+                                    .report-view-table { width: 100%; border-collapse: collapse; }
+                                    .report-view-table th, .report-view-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+                                    .report-view-table th { background: #f5f5f5; }
+        media print { .no-print { display: none; } }
+                                </style>
+                            </head>
+                            <body>
+                                <div class="no-print" style="text-align: center; margin-bottom: 20px;">
+                                    <button onclick="window.print()" class="btn btn-primary">چاپ</button>
+                                    <button onclick="window.close()" class="btn btn-secondary">بستن</button>
+                                </div>
+                                ${printContent}
+                            </body>
+                            </html>
+                        `);
+                printWindow.document.close();
+            });
+
+            // رویدادهای فیلتر
+            $('#searchInput, #accessTypeFilter, #unitFilter, #dateFilter').on('input change', function () {
+                filterAndRender();
+            });
+
+            $('#refreshBtn').click(function () {
+                loadReports();
+            });
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function (m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+
+            // بارگذاری اولیه
+            loadReports();
+        });
+    </script>
+}
