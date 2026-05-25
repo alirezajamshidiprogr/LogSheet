@@ -3,7 +3,14 @@
  * Copyright 2019-2023 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)
  */
-
+@font-face {
+    font-family: 'bootstrap-icons';
+    src: url('../fonts/bootstrap-icons.woff') format('woff');
+}
+@font-face {
+    font-family: 'bootstrap-icons';
+    src: url('../fonts/bootstrap-icons.woff2') format('woff2');
+}
 @font-face {
   font-display: block;
   font-family: "bootstrap-icons";
